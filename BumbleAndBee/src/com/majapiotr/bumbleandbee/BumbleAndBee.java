@@ -1,11 +1,21 @@
 package com.majapiotr.bumbleandbee;
 
 import inne.PrzechowalniaAssets;
+import screens.Level;
 import screens.MainMenu;
 
 import com.badlogic.gdx.Game;
 
-public class BumbleAndBee extends Game {	
+public class BumbleAndBee extends Game {
+	
+	IPrzycisk przyciskStrzalu;
+	
+	public BumbleAndBee(IPrzycisk przycisk)
+	{
+		super();
+		przyciskStrzalu = przycisk;
+	}
+	
 	@Override
 	public void create() {		
 		PrzechowalniaAssets.load();
@@ -35,5 +45,15 @@ public class BumbleAndBee extends Game {
 	@Override
 	public void resume() {
 		super.resume();
+	}
+	
+	public void zacznijLevel()
+	{
+		setScreen(new Level(this, przyciskStrzalu));
+	}
+	
+	public void pokazMenu()
+	{
+		setScreen(new MainMenu(this));
 	}
 }

@@ -11,6 +11,6 @@ public class Main {
 		cfg.width = 1200;
 		cfg.height = 700;
 		
-		new LwjglApplication(new BumbleAndBee(), cfg);
+		new LwjglApplication(new BumbleAndBee(new PustyPrzycisk()), cfg);
 	}
 }

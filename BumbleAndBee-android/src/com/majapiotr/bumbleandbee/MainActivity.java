@@ -17,6 +17,6 @@ public class MainActivity extends AndroidApplication {
         cfg.useAccelerometer = false;
         // to keep screen on
         cfg.useWakelock = true;
-        initialize(new BumbleAndBee(), cfg);
+        initialize(new BumbleAndBee(new PrzyciskStrzalu()), cfg);
     }
 }

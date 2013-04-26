@@ -14,6 +14,6 @@ public class GwtLauncher extends GwtApplication {
 
 	@Override
 	public ApplicationListener getApplicationListener () {
-		return new BumbleAndBee();
+		return new BumbleAndBee(new PustyPrzycisk());
 	}
 }

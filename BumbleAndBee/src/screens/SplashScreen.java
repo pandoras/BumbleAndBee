@@ -29,10 +29,6 @@ public class SplashScreen implements Screen {
 		batch.begin();
 		splashSprite.draw(batch);
 		batch.end();
-		
-		if(Gdx.input.isKeyPressed(Keys.ENTER)) {
-			game.setScreen(new Level());
-		}
 	}
 
 	@Override
@@ -48,8 +44,14 @@ public class SplashScreen implements Screen {
 		splashSprite = new Sprite(splashTexture);
 		
 		batch = new SpriteBatch();
+/*
+	    if(Assets.load()) {
+	        this.dispose();
+	        game.setScreen(new MainMenu(game));
+	    }   
+	    */
 	}
-
+	
 	@Override
 	public void hide() {
 		

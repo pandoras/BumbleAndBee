@@ -1,10 +1,16 @@
 package inne;
 
+import java.util.ArrayList;
+
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
+
 public class PrzechowalniaAssets {
+
 
 	public static SpriteBatch spriteBatch;
 	
@@ -20,19 +26,27 @@ public class PrzechowalniaAssets {
 	public static Sprite spritePosiadaneHP;
 	public static Sprite spriteStraconePosiadaneHP;
 	public static Sprite spriteMiod;
-	public static Sprite spriteTlo;
-	public static Sprite spriteStartGry;
-	public static Sprite spriteOpcje;
-	public static Sprite spriteExit;
 	public static Sprite spriteZadlo;
+	
+	// indeksy przyciskow
+	public static final int przyciskStart = 0;
+	public static final int przyciskOpcje = 1;
+	public static final int przyciskWyjscie = 2;	
+	// tabela tekstur przyciskow
+	public static  ArrayList<Texture> teksturyPrzyciskow;
+	public static Texture textureMenu;
 	
 	public static void load() {
 		
 		spriteBatch = new SpriteBatch();
-		spriteTlo = NarzedziaBitmapy.wczytajBitmape("menu/MainMenu.jpg");
-		spriteStartGry = NarzedziaBitmapy.wczytajBitmape("menu/start_gry.png");
-		spriteOpcje = NarzedziaBitmapy.wczytajBitmape("menu/opcje.png");
-		spriteExit = NarzedziaBitmapy.wczytajBitmape("menu/exit.png");
+		
+		textureMenu = new Texture(Gdx.files.internal("menu/MainMenu.jpg"));
+		
+		// wazne: kolejnosc jak w stalych przyciskow
+		teksturyPrzyciskow = new ArrayList<Texture>(3);
+		teksturyPrzyciskow.add(new Texture(Gdx.files.internal("menu/start_gry.png")));
+		teksturyPrzyciskow.add(new Texture(Gdx.files.internal("menu/opcje.png")));
+		teksturyPrzyciskow.add(new Texture(Gdx.files.internal("menu/exit.png")));
 		
 		fontSegoeUI15 = NarzedziaBitmapy.wczytajFont(15, "SegoeUI");	
 		fontSegoeUI14 = NarzedziaBitmapy.wczytajFont(14, "SegoeUI");
