@@ -20,8 +20,11 @@ import com.badlogic.gdx.scenes.scene2d.ui.Button.ButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton.ImageButtonStyle;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageTextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageTextButton.ImageTextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Widget;
 import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -33,6 +36,9 @@ import com.majapiotr.bumbleandbee.BumbleAndBee;
 
 public class MainMenu extends SkalowalnyEkran {
 	
+	private static final int BUTTON_WIDTH = 395;
+	private static final int BUTTON_HEIGHT = 77;
+	
 	// InputProcessor, wype³nia ca³y ekran
 	private Stage estrada;
 	
@@ -43,14 +49,14 @@ public class MainMenu extends SkalowalnyEkran {
 	
 	public MainMenu(final BumbleAndBee game) 	{
 		super(game);
-		estrada = new Stage(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true);
 
+		estrada = new Stage(0, 0, false);
 		// nasza estrada przetwarza wydarzenia wejœcia i rozdziela na aktorów
 		Gdx.input.setInputProcessor(estrada);
 
 		// ³adujemy t³o
 		Image image = new Image(new TextureRegion(PrzechowalniaAssets.textureMenu));		
-		//image.setScaling(Scaling.fill);
+		image.setScaling(Scaling.fill);
 		image.setBounds(0, 0, BASE_WIDTH, BASE_HEIGHT);
 		image.setAlign(Align.center);
 		estrada.addActor(image);
@@ -59,16 +65,19 @@ public class MainMenu extends SkalowalnyEkran {
 		tablicaPrzyciskow = new Table();	
 		// rysuj linie tablicy dla debuga
 		//tablicaPrzyciskow.debug();
-
-		estrada.addActor(tablicaPrzyciskow);		
+		
+		// nie mozna uzywac tablicaPrzyciskow.setFillParent(true); bo 
+		//   potem dziwnie sie zachowuje przy zmianie wielkosci ekranu
+		
+		estrada.addActor(tablicaPrzyciskow);	
+		tablicaPrzyciskow.setSize(BUTTON_WIDTH, 3*BUTTON_HEIGHT);
 		
 		for (int i = 0; i < PrzechowalniaAssets.teksturyPrzyciskow.size(); i++)
 		{
 			ImageButtonStyle stylStartu = new ImageButtonStyle();
 			stylStartu.imageUp = new TextureRegionDrawable(new TextureRegion(PrzechowalniaAssets.teksturyPrzyciskow.get(i)));
-			//stylStartu.imageDown =
-			ImageButton przycisk = new ImageButton(stylStartu);
-			// dodanie obslugi zdazenia
+			// tu mozna jeszcze inne style dodac, np stylStartu.imageDown
+			ImageButton przycisk = new ImageButton(stylStartu);			
 			switch (i)
 			{
 				case PrzechowalniaAssets.przyciskStart:
@@ -90,16 +99,15 @@ public class MainMenu extends SkalowalnyEkran {
 				default:
 					break;
 			}
+			
 			tablicaPrzyciskow.add(przycisk);
-			przycisk.setTransform(true);
+
 			tablicaPrzyciskow.row();			
 		}
 		
-
-		tablicaPrzyciskow.right().top();//.padTop(Value.percentHeight((float) 0.15)).padRight(Value.percentWidth((float) 0.0385));
 		tablicaPrzyciskow.pack();
-		tablicaPrzyciskow.setOrigin(tablicaPrzyciskow.getWidth(),tablicaPrzyciskow.getHeight());
-		
+		tablicaPrzyciskow.setX(BASE_WIDTH-BUTTON_WIDTH-46);
+		tablicaPrzyciskow.setY(BASE_HEIGHT-3*BUTTON_HEIGHT-115);		
 	}
 	
 
@@ -110,38 +118,17 @@ public class MainMenu extends SkalowalnyEkran {
 		estrada.act(Math.min(Gdx.graphics.getDeltaTime(), 1/30f));
 		estrada.draw();
 		// rysuj linie tablicy dla debuga
-		//Table.drawDebug(estrada);		
+		Table.drawDebug(estrada);		
 	}
 
 	@Override
 	public void resize(int width, int height) {
 		
-		super.resize(width, height);
-			
-		// ustawiamy wielkosc estrady, skalujac j¹ z zachowaniem stosunku wys/szer
-		estrada.setViewport(rozdzielczosc.x, rozdzielczosc.y, true);
-	
-		// to potrzebne tylko dla przybadku, gdzy ekran nie pasuje do stosunku wys/szer
-		// przesuwany trochê kamerê na estradzie ¿eby nie by³a w rogu
-		// tylko mia³a równe czarne prostok¹ty u góry i na dole (b¹dŸ te¿ na lewo/prawo)  
-		// Gutter to w³aœnie jeden z takich "wype³niaczy"
-		estrada.getCamera().translate(-przyciecie.x, -przyciecie.y, 0);
+		//super.resize(width, height);
+		
+		estrada.setViewport(BASE_WIDTH, BASE_HEIGHT, true);
+		estrada.getCamera().translate(-estrada.getGutterWidth(), -estrada.getGutterHeight(), 0);
 
-		// skalujemy obrazki
-		for (int i = 0; i < images.size(); i++) {
-			Image img = (Image)images.get(i);
-			img.setScale(skala);
-		}		
-		
-		tablicaPrzyciskow.setTransform(true);
-		//tablicaPrzyciskow.setOrigin(tablicaPrzyciskow.getPrefWidth() / 2, tablicaPrzyciskow.getPrefHeight() / 2);
-		tablicaPrzyciskow.setScale(skala);
-		
-		// skalowanie tabeli i odsuniecia od gornego prawego rogu, bo sama sie nie skaluje dobrze
-		float paddingx = 46*skala;
-		float paddingy = 110*skala;
-		tablicaPrzyciskow.setX( rozdzielczosc.x-tablicaPrzyciskow.getWidth()-paddingx);
-		tablicaPrzyciskow.setY( rozdzielczosc.y-tablicaPrzyciskow.getHeight()-paddingy);
 	}
 
 	@Override
