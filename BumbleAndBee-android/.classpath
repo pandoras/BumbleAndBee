@@ -8,5 +8,6 @@
 	<classpathentry exported="true" kind="lib" path="/BumbleAndBee/libs/gdx.jar" sourcepath="/BumbleAndBee/libs/gdx-sources.jar"/>
 	<classpathentry exported="true" kind="lib" path="/BumbleAndBee/libs/tween-engine-api.jar" sourcepath="/BumbleAndBee/libs/tween-engine-api-sources.jar"/>
 	<classpathentry kind="lib" path="libs/gdx-backend-android.jar"/>
+	<classpathentry kind="con" path="com.android.ide.eclipse.adt.DEPENDENCIES"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>

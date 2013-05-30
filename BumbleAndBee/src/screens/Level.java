@@ -13,6 +13,7 @@ import inne.WyswietlaniePrzeciwnikow;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Camera;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -22,6 +23,9 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.majapiotr.bumbleandbee.BumbleAndBee;
 import com.majapiotr.bumbleandbee.IPrzycisk;
 
@@ -43,14 +47,16 @@ public class Level extends SkalowalnyEkran  {
 	WyswietlaniePrzeciwnikow wyswietlaniePrzeciwnikow = new WyswietlaniePrzeciwnikow();
 	IPrzycisk przyciskStrzalu;
 
-	private Stage estrada;
+	private Stage przesuwaneT³o;
+	private Stage statystyki;
+	
 	TextureRegion miodek;
 	// kamera jest w pozycji 0 na poczatku poziomu a w pozycji 1 na koncu
 	private float pozycjaKameryProc;
 	
 	// private Camera camera;
 	Pszczola pszczola = new Pszczola();
-	PostepPoziomu postepPoziomu = new PostepPoziomu();
+	PostepPoziomu postepPoziomu;
 	InterfejsHP interfejsHP = new InterfejsHP();
 	long czas = System.nanoTime();
 	
@@ -58,9 +64,30 @@ public class Level extends SkalowalnyEkran  {
 	{
 		super(gra);
 		przyciskStrzalu = przycisk;
-		estrada = new Stage(LEVEL_WIDTH, BASE_HEIGHT, true);
+		przesuwaneT³o = new Stage(LEVEL_WIDTH, BASE_HEIGHT, true);
+		statystyki = new Stage(BASE_WIDTH, BASE_HEIGHT,true);
+		postepPoziomu = new PostepPoziomu();
+		statystyki.addActor(postepPoziomu);
+		
+		//---------------------------WYŒWIETLENIE INFORMACJI O LVL -------------------------------------
+		Skin skin = new Skin();
+		skin.add("default", new Label.LabelStyle(PrzechowalniaAssets.fontSegoeUI_Light32, new Color(1f, 1f, 1f, 1f)), Label.LabelStyle.class);
+		// bez podania nazwy stylu uzyje stylu 'default'
+		Label nazwaPoziomu = new Label("Poziom: 1",skin);
+		nazwaPoziomu.setX(BASE_WIDTH-nazwaPoziomu.getWidth()-20);
+		nazwaPoziomu.setY(BASE_HEIGHT-nazwaPoziomu.getHeight());
+		statystyki.addActor(nazwaPoziomu);	
+		
+		skin.add("mniejszy", new Label.LabelStyle(PrzechowalniaAssets.fontSegoeUI14, new Color(1f, 1f, 1f, 1f)), Label.LabelStyle.class);
+		// uzyj stylu 'mniejszy'
+		Label trudnosc = new Label("Poziom trudnoœci: £atwy",skin,"mniejszy");
+		trudnosc.setX(BASE_WIDTH-trudnosc.getWidth()-10);
+		trudnosc.setY(BASE_HEIGHT-trudnosc.getHeight()-nazwaPoziomu.getHeight());		
+		statystyki.addActor(trudnosc);
+		//---------------------------koniec WYŒWIETLENIE INFORMACJI O LVL -------------------------------------		
+		
 		// nasza estrada przetwarza wydarzenia wejœcia i rozdziela na aktorów
-		Gdx.input.setInputProcessor(estrada);		
+		Gdx.input.setInputProcessor(przesuwaneT³o);		
         //camera = new OrthographicCamera(BASE_WIDTH, BASE_HEIGHT);
 		Random rand = new Random();
 		miodek = new TextureRegion(new Texture(Gdx.files.internal("data/miod.png")));
@@ -75,7 +102,7 @@ public class Level extends SkalowalnyEkran  {
 			
 			y = rand.nextInt(BASE_HEIGHT - 200) + 100;			
 			miodek1.setBounds(x, y, 50, 50);
-			estrada.addActor(miodek1);
+			przesuwaneT³o.addActor(miodek1);
 			x+=200;
 		}
 		
@@ -109,16 +136,18 @@ public class Level extends SkalowalnyEkran  {
 			gra.pokazMenu();
 			return;
 		}	
-
 				
-		estrada.getCamera().position.set(pozycjaKamery, rozdzielczosc.y/2, 0);
+		przesuwaneT³o.getCamera().position.set(pozycjaKamery, rozdzielczosc.y/2, 0);
+		postepPoziomu.ustawProcent(pozycjaKameryProc);
 		
+		przesuwaneT³o.act(Math.min(Gdx.graphics.getDeltaTime(), 1/30f));
+		przesuwaneT³o.draw();
 		
-		estrada.act(Math.min(Gdx.graphics.getDeltaTime(), 1/30f));
-		estrada.draw();
+		statystyki.act(Math.min(Gdx.graphics.getDeltaTime(), 1/30f));
+		statystyki.draw();
 		
 
-		// to wszystko trzeba dodac do estrady zeby sie samo rysowalo
+		// to wszystko trzeba dodac do statystyki zeby sie samo rysowalo
 		
         // DRAW EVERYTHING		
 		// RYSOWANIE TEKSTU
@@ -129,7 +158,6 @@ public class Level extends SkalowalnyEkran  {
 		NarzedziaBitmapy.wyswietlText(PrzechowalniaAssets.fontSegoeUI72, czas(), Gdx.graphics.getWidth() / 2 - 72, Gdx.graphics.getHeight() - 10, 1f, 1f, 1f, 1f);
 		
 		// WYSWIETLENIE PSZCZOLY
-		//rysujBitmape.wyswietlBitmape(spritePszczola, 90, Gdx.graphics.getHeight() - 200);
 		this.pszczola.NarysujMnie();
 		
 		// RYSOWANIE CZASU
@@ -140,104 +168,26 @@ public class Level extends SkalowalnyEkran  {
 		NarzedziaBitmapy.wyswietlBitmape(PrzechowalniaAssets.spritePosiadaneHP, 10, Gdx.graphics.getHeight() - 70);
 		NarzedziaBitmapy.wyswietlBitmape(PrzechowalniaAssets.spriteStraconePosiadaneHP, 45, Gdx.graphics.getHeight() - 70);
 		NarzedziaBitmapy.wyswietlBitmape(PrzechowalniaAssets.spriteMiod, 220, Gdx.graphics.getHeight() - 70);
-		
-		// WYŒWIETLENIE INFORMACJI O LVL
-		NarzedziaBitmapy.wyswietlText(PrzechowalniaAssets.fontSegoeUI_Light32, "Poziom: 1", Gdx.graphics.getWidth() - 144, Gdx.graphics.getHeight() - 10, 1f, 1f, 1f, 1f);
-		NarzedziaBitmapy.wyswietlText(PrzechowalniaAssets.fontSegoeUI14, "Poziom trudnoœci: £atwy", Gdx.graphics.getWidth() - 160, Gdx.graphics.getHeight() - 40, 1f, 1f, 1f, 1f);
-		
+			
 		// RYSOWANIE PASKA HP
 		interfejsHP.wyswietlHP();
-		
-		// WYSWIETLA DOLNY PASEK POSTEPU LEVELU
-		postepPoziomu.wyswietlPasekPostepu((System.nanoTime() - czas) / 1000000000);
 		
 		// PRZECIWNICY
 		wyswietlaniePrzeciwnikow.obslugaPrzeciwnikow();
 	}
-
-	/*	
-	@Override
-	public void render(float arg0) {
-	    //----Aspect Ratio maintenance
-
-	    // update camera
-	    camera.update();
-	    camera.apply(Gdx.gl10);
-
-	    // set viewport
-	    Gdx.gl.glViewport((int) viewport.x, (int) viewport.y,
-	                      (int) viewport.width, (int) viewport.height);
-
-	    // clear previous frame
-	    Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
-
-	    // DRAW EVERYTHING
-	//--maintenance end--
-
-
-	    splashScreenSprite.begin();
-	    splashScreenSprite.disableBlending();
-	    splashScreenSprite.draw(splashScreenRegion, 0, 0);
-	    splashScreenSprite.end();
-	}
-
-	@Override
-	public void resize(int width, int height) {
-	    //--Aspect Ratio Maintenance--
-	    // calculate new viewport
-	    float aspectRatio = (float)width/(float)height;
-	    float scale = 1f;
-	    Vector2 crop = new Vector2(0f, 0f);
-
-	    if(aspectRatio > ASPECT_RATIO)
-	    {
-	        scale = (float)height/(float)VIRTUAL_HEIGHT;
-	        crop.x = (width - VIRTUAL_WIDTH*scale)/2f;
-	    }
-	    else if(aspectRatio < ASPECT_RATIO)
-	    {
-	        scale = (float)width/(float)VIRTUAL_WIDTH;
-	        crop.y = (height - VIRTUAL_HEIGHT*scale)/2f;
-	    }
-	    else
-	    {
-	        scale = (float)width/(float)VIRTUAL_WIDTH;
-	    }
-
-	    float w = (float)VIRTUAL_WIDTH*scale;
-	    float h = (float)VIRTUAL_HEIGHT*scale;
-	    viewport = new Rectangle(crop.x, crop.y, w, h);
-	//Maintenance ends here--
-	}
-
-
-	@Override
-	public void show() {
-	    camera = new OrthographicCamera(VIRTUAL_WIDTH, VIRTUAL_HEIGHT); //Aspect Ratio Maintenance
-
-	    splashScreen = new Texture(Gdx.files.internal("images/splashScreen.png"));
-	    splashScreenRegion = new TextureRegion(splashScreen, 0, 0, 640, 480);
-	    splashScreenSprite = new SpriteBatch();
-
-	    if(Assets.load()) {
-	        this.dispose();
-	        TempMainGame.setScreen(TempMainGame.mainmenu);
-	    }   
-	}	*/
-
 	
 	@Override
 	public void resize(int width, int height) {
 		super.resize(width, height);
 		
-		estrada.setViewport(rozdzielczosc.x*2, rozdzielczosc.y, true);
-		estrada.getCamera().viewportWidth = rozdzielczosc.x;
-		estrada.getCamera().viewportHeight = rozdzielczosc.y;
+		przesuwaneT³o.setViewport(rozdzielczosc.x*2, rozdzielczosc.y, true);
+		przesuwaneT³o.getCamera().viewportWidth = rozdzielczosc.x;
+		przesuwaneT³o.getCamera().viewportHeight = rozdzielczosc.y;
 		
 		float pozycjaKamery = rozdzielczosc.x/2 +  pozycjaKameryProc * (WIDTH_MULTIPLIER-1)*rozdzielczosc.x;
-		estrada.getCamera().position.set(pozycjaKamery, rozdzielczosc.y/2, 0);
+		przesuwaneT³o.getCamera().position.set(pozycjaKamery, rozdzielczosc.y/2, 0);
 		
-		for (Actor a : estrada.getActors()) {
+		for (Actor a : przesuwaneT³o.getActors()) {
 			a.setScale(skala);
 		}	
 	}
