@@ -22,6 +22,9 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Intersector;
+import com.badlogic.gdx.math.Polygon;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -46,11 +49,21 @@ public class Level extends SkalowalnyEkran  {
 	class ImageGroup extends Group {
 		
 		TextureRegion obrazek;
+		Polygon granice = null;
 		
+		// stworz grupê. Ramka bêdzie w postaci prostok¹ta
 		public ImageGroup(TextureRegion coMalowac)
 		{
 			obrazek = coMalowac;
 		}
+		
+		// stworz grupê z ramk¹ w postaci wielok¹ta
+		public ImageGroup(TextureRegion coMalowac, float[] wierzcholki)
+		{
+			obrazek = coMalowac;
+			granice = new Polygon(wierzcholki);
+		}
+		
 		public void draw (SpriteBatch batch, float parentAlpha) {
 			batch.setColor(getColor());
 			batch.draw(obrazek, getX(), getY(), getOriginX(), getOriginY(), getWidth(), getHeight(), getScaleX(), getScaleY(),
@@ -74,6 +87,24 @@ public class Level extends SkalowalnyEkran  {
 	    			 (y <= this.getY()+this.getHeight()/2) )	? this : null;
 	        //return super.hit(x, y, touchable);
 	    }
+	    
+	    Rectangle getRectangle()
+	    {
+	    	return  new Rectangle(this.getX(),this.getY(), this.getWidth(), this.getHeight() );
+	    }
+	    
+	    public boolean hit(Pszczola bee)
+	    {
+	    	Polygon granicePszczoly = bee.getPolygon();
+	  /*  	if (granice!=null && granicePszczoly!=null)
+	    	{
+	    		granice.setOrigin(getOriginX(), getOriginY());
+	    		return Intersector.overlapConvexPolygons(new Polygon(granice.getTransformedVertices()),granicePszczoly);
+	    	}*/
+	    	return Intersector.overlapRectangles(getRectangle(), bee.getRectangle());
+	    	// overlapConvexPolygons
+	    	
+	    }	    
 	    
 	}
 	
@@ -153,18 +184,34 @@ public class Level extends SkalowalnyEkran  {
 		Random rand = new Random();
 		TextureRegion miodek = new TextureRegion(new Texture(Gdx.files.internal("data/miod.png")));
 		
+		float[] wierzcholki = {0.12626907f, 13.13198262f, 
+			 6.06091530f, 20.58188262f, 
+			 6.06091530f, 23.35978262f, 
+			 9.59644920f, 25.25378262f, 
+			 15.40482600f, 24.24368262f,
+			 20.45558900f, 28.28428262f,
+			 28.28427100f, 26.64278262f,
+			 27.02158100f, 21.21318262f,
+			 35.22907000f, 18.56158262f,
+			 33.46130300f, 11.74298262f,
+			 23.35977800f, 7.82868262f, 
+			 21.46574200f, 1.01018262f, 
+			 14.64721200f, 0f,
+			 9.09137290f, 3.91438262f, 
+			 3.66180300f, 2.52538262f, 
+			 0.37880721f, 6.94478262f, 
+			 2.14657420f, 9.84898262f};		
 		int x = 200;
 		int y;
 		while ( x<LEVEL_WIDTH)
 		{
-			ImageGroup miodek1 = new ImageGroup(miodek);
+			ImageGroup miodek1 = new ImageGroup(miodek, wierzcholki);
 			miodki.add(miodek1);
 			miodek1.setRotation(30);
 			miodek1.setTransform(true);
 			
 			y = rand.nextInt(BASE_HEIGHT - 200) + 100;	
-			// wielkosc miodka ustaw na 50px
-			miodek1.setBounds(x, y, 50, 50);
+			miodek1.setBounds(x, y, miodek.getRegionWidth(), miodek.getRegionHeight());
 			przesuwaneT³o.addActor(miodek1);
 			x+=200;
 		}
@@ -295,11 +342,13 @@ public class Level extends SkalowalnyEkran  {
 		for (int i = miodki.size()-1; i>=0; i--)
 		{			
 			
-			Actor hitActor = miodki.get(i).hit( this.pszczola.x, this.pszczola.y,false);
-			if (hitActor!=null)
+			//Actor hitActor = miodki.get(i).hit( this.pszczola.x, this.pszczola.y,false);
+			//if (hitActor!=null)
+			if (miodki.get(i).hit(pszczola))
 			{
 				System.out.println("Hit na miodek");
-				hitActor.remove();
+				//hitActor.remove();
+				miodki.get(i).remove();
 				miodki.remove(i);
 				ileMiodu++;
 			}
