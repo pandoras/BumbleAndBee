@@ -1,24 +1,29 @@
 package com.majapiotr.bumbleandbee;
 
 import inne.PrzechowalniaAssets;
-import screens.Level;
-import screens.MainMenu;
+import inne.Tester;
+import screens.*;
+import zdazenia.Powiadamiacz;
 
 import com.badlogic.gdx.Game;
 
 public class BumbleAndBee extends Game {
 	
 	IPrzycisk przyciskStrzalu;
+	public Powiadamiacz powiadamiacz;
 	
 	public BumbleAndBee(IPrzycisk przycisk)
 	{
 		super();
 		przyciskStrzalu = przycisk;
+		powiadamiacz = new Powiadamiacz();
 	}
 	
 	@Override
 	public void create() {		
+		this.setScreen(new SplashScreen(this));
 		PrzechowalniaAssets.load();
+		Tester.init();
 		setScreen(new MainMenu(this));
 	}
 

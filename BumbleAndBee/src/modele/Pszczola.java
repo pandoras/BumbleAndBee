@@ -5,31 +5,31 @@ import inne.PrzechowalniaAssets;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
-import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 
-public class Pszczola {
+public class Pszczola extends AnimowanyObiekt implements IObiekt {
 
 	// pozycja do rysowania na ekranie
 	float ekranowyx = 100;
-	
-	// pozycja w levelu
-	public float x = ekranowyx;	
-	public float y = 100;
 	
 	private int pixeliNaSekunde = 100;
 	Zadlo zadlo;
 	public Body cialo = null;
 	Polygon granice;
-
+	
 	
 	public Pszczola() {
+		    
+		super (new TextureRegion(new Texture(Gdx.files.internal("data/pszczola.png"))));
+		
+		this.setBounds(ekranowyx, 100, obrazek.getRegionWidth(), obrazek.getRegionHeight());
+		
 		zadlo = new Zadlo();
 		float[]vertice={ 27.27516100f, 0.16148262f,
 				 10.89715900f, 10.07748262f,
@@ -57,6 +57,8 @@ public class Pszczola {
 	
 	public void odswierzPozycje(float poczatekEkranu, float deltaTime)
 	{
+		float y = this.getY();
+		
 		if (Gdx.input.isKeyPressed(Keys.DPAD_LEFT) && ekranowyx!=0) {
 			this.ekranowyx -= deltaTime*this.pixeliNaSekunde;
 		}
@@ -64,27 +66,46 @@ public class Pszczola {
 			this.ekranowyx += deltaTime*this.pixeliNaSekunde;
 		}
 		if (Gdx.input.isKeyPressed(Keys.DPAD_UP) && y!=570) {
-			this.y += deltaTime*this.pixeliNaSekunde;
+			this.setY( y + deltaTime*this.pixeliNaSekunde);
 		}
 		if (Gdx.input.isKeyPressed(Keys.DPAD_DOWN) && y!=50) {
-			this.y -= deltaTime*this.pixeliNaSekunde;
+			this.setY( y - deltaTime*this.pixeliNaSekunde);
 		}	
 		
 		// pozycja pszczoly w levelu / na scenie
-		this.x = poczatekEkranu + this.ekranowyx;
+		this.setX( poczatekEkranu + this.ekranowyx);
 	}
 	
-	public Rectangle getRectangle()
+	@Override
+	public Rectangle pobierzProstok¹t()
 	{
-		return new Rectangle(this.x,this.y, PrzechowalniaAssets.spritePszczola.getWidth(), PrzechowalniaAssets.spritePszczola.getHeight());
+		return new Rectangle(this.getX(),this.getY(), PrzechowalniaAssets.spritePszczola.getWidth(), PrzechowalniaAssets.spritePszczola.getHeight());
 	}
 	
-	public Polygon getPolygon()
+	@Override
+	public float[] pobierzGraniceEkranowe()
 	{
-		granice.setOrigin(x, y);
-		return new Polygon(granice.getTransformedVertices());
+		granice.setPosition(ekranowyx,this.getY());
+		return granice.getTransformedVertices();
+	}	
+	
+	@Override
+	public float[] pobierzGranice()
+	{
+		granice.setPosition(this.getX(), this.getY());
+		granice.setScale(PrzechowalniaAssets.spritePszczola.getScaleX(), PrzechowalniaAssets.spritePszczola.getScaleY());
+		return granice.getTransformedVertices();
 	}
 
+	@Override
+	public void draw (SpriteBatch batch, float parentAlpha) {
+		batch.setColor(getColor());
+		batch.draw(obrazek, ekranowyx, getY(), getOriginX(), getOriginY(), getWidth(), getHeight(), getScaleX(), getScaleY(),
+			getRotation());
+
+		//super.draw(batch, parentAlpha);
+	}
+	
 	public void NarysujMnie() {
 
 
@@ -99,41 +120,7 @@ public class Pszczola {
 			}
 		}
 
-		NarzedziaBitmapy.wyswietlBitmape(PrzechowalniaAssets.spritePszczola, (int)this.ekranowyx, (int)this.y);
-		
-		/*
-		// odswierz pozycje w swiecie, contactManager.FindNewContacts() bedzie wolany
-		boolean updateContacts = false;
-		if (cialo!=null)
-		{
-			Vector2 test = cialo.getPosition(); 
-			if (this.x != test.x || this.y != test.y)
-				cialo.setTransform(this.x, this.y, 0, updateContacts);
-		}
-		*/
+		NarzedziaBitmapy.wyswietlBitmape(PrzechowalniaAssets.spritePszczola, (int)this.ekranowyx, (int)this.getY());
 	}
-	
-	/*
-	public void dodajDoSwiata(World world)
-	{
-	    //  box 50 wide and high.
-		PolygonShape boxPoly = new PolygonShape();
-		boxPoly.setAsBox(PrzechowalniaAssets.spritePszczola.getWidth()/2f,PrzechowalniaAssets.spritePszczola.getHeight()/2f);
-
-		
-		// ten kod dodaje Boxy monet do swiata world
-		// pozwoli nam to na detekcje polizji poprzez metode world.getContactCount
-		BodyDef boxBodyDef = new BodyDef();
-		// cialo, na ktore nie wplywa grawitacja swiata 
-		boxBodyDef.type = BodyType.DynamicBody;
-		boxBodyDef.position.x = this.x;
-		boxBodyDef.position.y = this.y;	
-		cialo = world.createBody(boxBodyDef);
-		
-		System.out.println("Pszczola na pozycji x:" + this.x + " y:" + this.y);
-		
-		cialo.createFixture(boxPoly, 1);		
-	}
-	*/
 
 }

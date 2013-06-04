@@ -32,6 +32,6 @@ public class Zadlo {
 	public void wysun(Pszczola pszczola)
 	{
 		ekranowyx = (int)pszczola.ekranowyx+80;
-		y = (int)pszczola.y+20;		
+		y = (int)pszczola.getY()+20;		
 	}
 }

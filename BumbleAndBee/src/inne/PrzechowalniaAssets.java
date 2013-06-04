@@ -8,7 +8,6 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-
 public class PrzechowalniaAssets {
 
 
@@ -61,5 +60,8 @@ public class PrzechowalniaAssets {
 		spriteMiod = NarzedziaBitmapy.wczytajBitmape("data/miod.png");
 		spritePrzeciwnik = NarzedziaBitmapy.wczytajBitmape("data/trzmiel.png");
 		spriteZadlo = NarzedziaBitmapy.wczytajBitmape("data/zadlo.png");
+		
+
+	
 	}
 }
