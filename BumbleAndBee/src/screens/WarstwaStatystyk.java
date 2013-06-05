@@ -39,9 +39,12 @@ public class WarstwaStatystyk extends Warstwa implements RejestratorPunktacji {
 	
 	public static final int CZAS_Y_TOP = 10;
 	
+	public static final int PASEKHP_X = 2;
+	public static final int PASEKHP_Y_TOP = 35;
+	
 	PostepPoziomu postepPoziomu;
 	
-	InterfejsHP interfejsHP = new InterfejsHP();
+	InterfejsHP interfejsHP;
 	long czas = System.nanoTime();
 	
 	public int ileMonet = 0;
@@ -93,18 +96,18 @@ public class WarstwaStatystyk extends Warstwa implements RejestratorPunktacji {
 		
 		Image moneta = new Image(new TextureRegion(new Texture(Gdx.files.internal("data/moneta.png"))));
 		moneta.setX(WarstwaStatystyk.MONETA_X);
-		moneta.setY(Gdx.graphics.getHeight() - WarstwaStatystyk.MONETA_Y_TOP);
+		moneta.setY(SkalowalnyEkran.BASE_HEIGHT - WarstwaStatystyk.MONETA_Y_TOP);
 		addActor(moneta);
 		
 		Image miod = new Image(new TextureRegion(new Texture(Gdx.files.internal("data/miod.png"))));
 		miod.setX(WarstwaStatystyk.MIOD_X);
-		miod.setY(Gdx.graphics.getHeight() - WarstwaStatystyk.MIOD_Y_TOP);
+		miod.setY(SkalowalnyEkran.BASE_HEIGHT - WarstwaStatystyk.MIOD_Y_TOP);
 		addActor(miod);		
 		
 		// zycia
 		posiadaneZycia = new Zycia(4);
 		posiadaneZycia.setX(ZYCIA_X);
-		posiadaneZycia.setY(Gdx.graphics.getHeight() - ZYCIA_Y_TOP);
+		posiadaneZycia.setY(SkalowalnyEkran.BASE_HEIGHT - ZYCIA_Y_TOP);
 		addActor(posiadaneZycia);			
 		//--------------------------- koniec WYŒWIETLENIE ZMIENNYCH -------------------------------------
 		
@@ -112,7 +115,12 @@ public class WarstwaStatystyk extends Warstwa implements RejestratorPunktacji {
 		labelCzas = new Label(czas(),skin,"duzy");
 		labelCzas.setX((SkalowalnyEkran.BASE_WIDTH - labelCzas.getWidth())/2);
 		labelCzas.setY(SkalowalnyEkran.BASE_HEIGHT - labelCzas.getHeight() - CZAS_Y_TOP);		
-		addActor(labelCzas);			
+		addActor(labelCzas);		
+		
+		interfejsHP = new InterfejsHP();
+		interfejsHP.setX(PASEKHP_X);
+		interfejsHP.setY(SkalowalnyEkran.BASE_HEIGHT - PASEKHP_Y_TOP);
+		addActor(interfejsHP);
 
 	}
 	
@@ -131,9 +139,6 @@ public class WarstwaStatystyk extends Warstwa implements RejestratorPunktacji {
 		//Tester.narysujGraniceObiektu(pszczola);		
 		//for (int i = miodki.size()-1; i>=0; i--)	
 		//	Tester.narysujGraniceObiektu(miodki.get(i));	
-
-		// RYSOWANIE PASKA HP
-		interfejsHP.wyswietlHP();		
 	}
 	
 	public String czas() {
