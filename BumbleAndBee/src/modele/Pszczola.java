@@ -24,13 +24,14 @@ public class Pszczola extends AnimowanyObiekt implements IObiekt {
 	Polygon granice;
 	
 	
-	public Pszczola() {
+	public Pszczola(float startx, float starty) {
 		    
 		super (new TextureRegion(new Texture(Gdx.files.internal("data/pszczola.png"))));
 		
-		this.setBounds(ekranowyx, 100, obrazek.getRegionWidth(), obrazek.getRegionHeight());
+		this.setBounds(startx, starty, obrazek.getRegionWidth(), obrazek.getRegionHeight());
 		
 		zadlo = new Zadlo();
+		// granice pszczoly
 		float[]vertice={ 27.27516100f, 0.16148262f,
 				 10.89715900f, 10.07748262f,
 				 0.79401952f, 11.39798262f,
@@ -74,6 +75,16 @@ public class Pszczola extends AnimowanyObiekt implements IObiekt {
 		
 		// pozycja pszczoly w levelu / na scenie
 		this.setX( poczatekEkranu + this.ekranowyx);
+		
+		if (Gdx.input.isKeyPressed(Keys.SPACE) && zadlo.pozaEkranem()){
+			zadlo.wysun(this);
+		}	
+		else if (!zadlo.pozaEkranem()){
+			zadlo.przesun();
+			if ( zadlo.pozaEkranem()){
+				zadlo.ekranowyx = -1;
+			}
+		}		
 	}
 	
 	@Override
@@ -103,24 +114,8 @@ public class Pszczola extends AnimowanyObiekt implements IObiekt {
 		batch.draw(obrazek, ekranowyx, getY(), getOriginX(), getOriginY(), getWidth(), getHeight(), getScaleX(), getScaleY(),
 			getRotation());
 
-		//super.draw(batch, parentAlpha);
-	}
-	
-	public void NarysujMnie() {
-
-
-		if (Gdx.input.isKeyPressed(Keys.SPACE) && zadlo.pozaEkranem()){
-			zadlo.wysun(this);
-		}
 		if (!zadlo.pozaEkranem()){
-			zadlo.wyswietl();
-			zadlo.przesun();
-			if ( zadlo.pozaEkranem()){
-				zadlo.ekranowyx = -1;
-			}
+			zadlo.draw(batch);
 		}
-
-		NarzedziaBitmapy.wyswietlBitmape(PrzechowalniaAssets.spritePszczola, (int)this.ekranowyx, (int)this.getY());
 	}
-
 }

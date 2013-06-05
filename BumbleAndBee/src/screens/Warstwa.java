@@ -12,7 +12,7 @@ public class Warstwa extends Stage {
 	
 	public Warstwa(int szerokosc, BumbleAndBee glownaGra)
 	{
-		super(szerokosc, SkalowalnyEkran.BASE_HEIGHT, true);
+		super(szerokosc, SkalowalnyEkran.BASE_HEIGHT, false);
 		gra = glownaGra;
 	}
 	

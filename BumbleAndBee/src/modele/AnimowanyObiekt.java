@@ -1,5 +1,7 @@
 package modele;
 
+import screens.SkalowalnyEkran;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -112,31 +114,38 @@ public class AnimowanyObiekt extends Group implements IObiekt {
 		return granice.getTransformedVertices();
 	}	
 	
+	// animacja usuwania z planszy przesuwa aktora do podanej pozycji i wykonuje akcje implement (zwiekszenie jakiegos licznika)
 	public void animujNaUsuwanie(int finalDoX, int finalDoYtop, Action implement)
 	{	
-		Vector3 thisCoordinates = new Vector3(finalDoX+ANIMACJA_ZAPAS_X, this.getStage().getHeight() - finalDoYtop, 0);
-		this.getStage().getCamera().unproject(thisCoordinates);
+		// musimy ustalic gdzie ma sie konczyc animacja na przesuwnej warstwie 
+		
+		// kamera jest na srodku ekranu
+		Vector3 srodek = this.getStage().getCamera().position;
+		
+		float wLewoOdSrodkaX = SkalowalnyEkran.BASE_WIDTH/2 - finalDoX - ANIMACJA_ZAPAS_X;		
+		float wGoreOdSrodkaY = SkalowalnyEkran.BASE_HEIGHT/2 - finalDoYtop;
 		
 		MoveToAction action1 = new MoveToAction();
-		// nie wiem dlaczego tu musi byæ minus
-		action1.setPosition(thisCoordinates.x, -thisCoordinates.y);
+		action1.setPosition(srodek.x - wLewoOdSrodkaX , srodek.y + wGoreOdSrodkaY);
+		// ile bedzie trwalo przelatywanie monety/miodku na ta pozycje
 		action1.setDuration(1f);
 		
+		// zwiekszamy powoli przezroczystosc 
 		AlphaAction action2 = new AlphaAction();
 		action2.setAlpha(0);
+		// czas trwania tej czesci animacji
 		action2.setDuration(1f);
 		
 		// ta akcja musi byc ostatnia bo usuwa aktora na dobre
 		Action actionFinal = new Action() {
-			  public boolean act( float delta ) {
-				   //game.setScreen( new MenuScreen( game ) );
-				  
+			  public boolean act( float delta ) {				   				
 				   // remove actor on end
 				   remove();
 				   return true; // returning true consumes the event
 				  }
 				 } ;
 
+		// stworz sekwencje
 		SequenceAction sekwencja = new SequenceAction();
 		sekwencja.addAction(action1);
 		sekwencja.addAction(action2);

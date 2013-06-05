@@ -1,11 +1,17 @@
 package screens;
 
 import zdazenia.Punktuj;
+import inne.Tester;
 import inne.WyswietlaniePrzeciwnikow;
 import modele.KolekcjaObiektow;
 import modele.Pszczola;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.Pixmap.Format;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.majapiotr.bumbleandbee.BumbleAndBee;
@@ -16,11 +22,21 @@ public class WarstwaTla extends Warstwa {
 	public KolekcjaObiektow monety;	
 	public KolekcjaObiektow miodki;
 	WyswietlaniePrzeciwnikow wyswietlaniePrzeciwnikow;
+	int szerokoscPoziomu;
+	// jednolita tekstura t³a
+	Texture teksturaT³a;
 	
 	public WarstwaTla(int mnoznikDlugosci, BumbleAndBee maingame)
 	{
 		super(SkalowalnyEkran.BASE_WIDTH * mnoznikDlugosci, maingame);
+		szerokoscPoziomu = SkalowalnyEkran.BASE_WIDTH * mnoznikDlugosci;
 		
+		// zainicjuj teksturê t³a
+		Pixmap p = new Pixmap(1, 1, Format.RGBA8888);
+		p.setColor(new Color(0.15f, 0.58f, 0, 1));
+		p.fillRectangle(0, 0, 1, 1);	
+	    teksturaT³a = new Texture(p, Format.RGB888, false);		
+	    
 		wyswietlaniePrzeciwnikow = new WyswietlaniePrzeciwnikow();
 		
 		// inicjujemy monety i miodki
@@ -49,17 +65,31 @@ public class WarstwaTla extends Warstwa {
 		monety.stworz(100, 200, SkalowalnyEkran.BASE_WIDTH * mnoznikDlugosci, SkalowalnyEkran.BASE_HEIGHT, this);		
 	}
 	
-	public void render(float delta, Vector3 pozycjaKamery)
-	{
-		this.getCamera().position.set(pozycjaKamery);
-		
-		this.act(Math.min(Gdx.graphics.getDeltaTime(), 1/30f));
-		this.draw();	
+	@Override
+	public void act(float delta)
+	{	
+		super.act(delta);
 		
 		// PRZECIWNICY
-		wyswietlaniePrzeciwnikow.obslugaPrzeciwnikow();		
+		wyswietlaniePrzeciwnikow.act();		
 	}
 	
+	// nadpisujemy rysowanie bo chcemy rysowac t³o sami (moznaby tez dodac aktora ktory bedzie wielkim prostokatem ale...)
+	@Override
+	public void draw()
+	{
+		// narysuj ostatni ekran
+		SpriteBatch batch = this.getSpriteBatch();
+		batch.begin();
+		batch.draw(teksturaT³a, 0, 0, szerokoscPoziomu, SkalowalnyEkran.BASE_HEIGHT) ;
+		
+		batch.draw(Tester.debugTexture,  szerokoscPoziomu-SkalowalnyEkran.BASE_WIDTH, 0, SkalowalnyEkran.BASE_WIDTH, SkalowalnyEkran.BASE_HEIGHT) ;
+		batch.end();
+		
+		super.draw();
+		
+		wyswietlaniePrzeciwnikow.draw();
+	}	
 	public void sprawdzKolizje(Pszczola pszczola)
 	{
 		miodki.sprawdzKolizje(pszczola);

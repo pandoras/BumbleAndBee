@@ -4,6 +4,7 @@ package screens;
 import modele.Pszczola;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.majapiotr.bumbleandbee.BumbleAndBee;
@@ -12,7 +13,7 @@ import com.majapiotr.bumbleandbee.IPrzycisk;
 
 public class Level extends SkalowalnyEkran  {	
 	
-	protected static final int WIDTH_MULTIPLIER = 2;
+	protected static final int WIDTH_MULTIPLIER = 3;
 	protected static final int LEVEL_WIDTH = BASE_WIDTH*WIDTH_MULTIPLIER;
 	
 	IPrzycisk przyciskStrzalu;
@@ -24,6 +25,9 @@ public class Level extends SkalowalnyEkran  {
 	// kamera jest w pozycji 0 na poczatku poziomu a w pozycji 1 na koncu
 	private float pozycjaKameryProc;
 	
+	// pozycja kamery w pikselach na poczatku i koncu levelu (trzeba przeliczyc na resize)
+	float pozycjaKameryPxStart, pozycjaKameryPxEnd; 
+			
 	Pszczola pszczola;	
 	
 	public Level (BumbleAndBee gra,IPrzycisk przycisk)
@@ -35,7 +39,7 @@ public class Level extends SkalowalnyEkran  {
 		
 		pozycjaKameryProc = 0;
 		
-		pszczola = new Pszczola();
+		pszczola = new Pszczola(100, 100);
 		statystyki.addActor(pszczola);
 		
 		// TODO: to trzeba zrobic zamiast sprawdzac spacjê w pszczole
@@ -46,45 +50,80 @@ public class Level extends SkalowalnyEkran  {
 	public void render(float delta) 
 	{
 		super.render(delta);
+
+		przesunKamere(delta);
 		
-		float pozycjaKamery = rozdzielczosc.x/2 +  pozycjaKameryProc * (WIDTH_MULTIPLIER-1)*rozdzielczosc.x;
-		// przesun kamere
-		pozycjaKamery += Gdx.graphics.getDeltaTime()*50;
+		// odswierz i narysuj wszystkie poziomy (jest tak pozdielione bo na pause nie robi sie act(), tylko draw())
+		przesuwaneT³o.act(Math.min(Gdx.graphics.getDeltaTime(), 1/30f));	
+		przesuwaneT³o.draw();
 		
-		// odswiez procent
-		pozycjaKameryProc = (pozycjaKamery - rozdzielczosc.x/2) / ((WIDTH_MULTIPLIER-1)*rozdzielczosc.x);
-		if (pozycjaKameryProc>1)
+		statystyki.act(Math.min(Gdx.graphics.getDeltaTime(), 1/30f), pozycjaKameryProc);
+		statystyki.draw();
+		
+		// odswierz pozycje pszczoly w levelu
+		this.pszczola.odswierzPozycje(przesuwaneT³o.getCamera().position.x-BASE_WIDTH/2 , delta);
+		
+		przesuwaneT³o.sprawdzKolizje(pszczola);
+	}
+	
+	public void przesunKamere(float delta)
+	{
+		/*
+		 *  OBLICZENIA KAMERY
+		 *  
+		 *  viewportWidth = przesuwaneT³o.getCamera().viewportWidth
+		 *  gutterWidth = przesuwaneT³o.getGutterWidth()
+		 *  translateX - przesuniecie kamery ustawiane poleceniem : przesuwaneT³o.getCamera().translate(translateX, 0, 0)
+		 *  cameraX - pozycja kamery ktora mozna pobrac: przesuwaneT³o.getCamera().position.x
+		 *  
+		 *  RÓWNANIA:
+		 *  
+		 *  viewportWidth = BASE_WIDTH + 2*gutterWidth
+		 *  cameraX = translateX + viewportWidth/2
+		 *  
+		 *  Dla naszych potrzeb kamera sie ma przesuwac:
+		 *    start (jest poczatek levelu po lewej): viewportWidth/2 
+		 *    end1 (jest poczatek levelu po prawej): BASE_WIDTH*WIDTH_MULTIPLIER - viewportWidth/2 
+		 *    end2 (ostatni ekran levelu zaczyna sie po prawej): BASE_WIDTH*WIDTH_MULTIPLIER - BASE_WIDTH/2 - gutterWidth
+		 *  
+		 */
+
+		// przesun kamere o troszke pikseli do przodu
+		przesuwaneT³o.getCamera().translate(delta * 50, 0, 0);
+		
+		// oblicz pozycje kamery w procentach
+		pozycjaKameryProc = (przesuwaneT³o.getCamera().position.x - pozycjaKameryPxStart) / (pozycjaKameryPxEnd - pozycjaKameryPxStart);
+		if (pozycjaKameryProc>=1f)
 		{	
 			gra.pokazMenu();
 			return;
 		}	
-		
-		// odswierz i narysuj wszystkie poziomy 
-		przesuwaneT³o.render(Math.min(Gdx.graphics.getDeltaTime(), 1/30f), new Vector3(pozycjaKamery, rozdzielczosc.y/2, 0));	
-		statystyki.render(Math.min(Gdx.graphics.getDeltaTime(), 1/30f), pozycjaKameryProc);
-		
-		// WYSWIETLENIE PSZCZOLY
-		this.pszczola.odswierzPozycje(pozycjaKamery- rozdzielczosc.x/2, delta);
-		//this.pszczola.NarysujMnie();
-		
-		przesuwaneT³o.sprawdzKolizje(pszczola);
 	}
 
 	
 	@Override
 	public void resize(int width, int height) {
-		super.resize(width, height);
 		
-		przesuwaneT³o.setViewport(rozdzielczosc.x*2, rozdzielczosc.y, true);
-		przesuwaneT³o.getCamera().viewportWidth = rozdzielczosc.x;
-		przesuwaneT³o.getCamera().viewportHeight = rozdzielczosc.y;
+		statystyki.setViewport(BASE_WIDTH, BASE_HEIGHT, true);
+		przesuwaneT³o.setViewport(BASE_WIDTH, BASE_HEIGHT, true);	
 		
-		float pozycjaKamery = rozdzielczosc.x/2 +  pozycjaKameryProc * (WIDTH_MULTIPLIER-1)*rozdzielczosc.x;
-		przesuwaneT³o.getCamera().position.set(pozycjaKamery, rozdzielczosc.y/2, 0);
+		// Wysrodkuj kamere ( dla warstwy przesuwnej nie przesuwaj w x)
+		statystyki.getCamera().translate(-statystyki.getGutterWidth(), -statystyki.getGutterHeight(), 0);		
+		przesuwaneT³o.getCamera().translate(0, -przesuwaneT³o.getGutterHeight(), 0);
 		
-		for (Actor a : przesuwaneT³o.getActors()) {
-			a.setScale(skala);
-		}	
+		//
+		// Policz ponownie pozycje poczatku i konca levelu
+		//
+		pozycjaKameryPxStart = przesuwaneT³o.getCamera().viewportWidth/2;
+		//
+		// wersja end1 (patrz OBLICZENIA KAMERY):
+		//pozycjaKameryPxEnd = BASE_WIDTH*WIDTH_MULTIPLIER - pozycjaKameryPxStart;
+		//
+		// wersja end2 (patrz OBLICZENIA KAMERY):
+		pozycjaKameryPxEnd = BASE_WIDTH*WIDTH_MULTIPLIER - BASE_WIDTH/2;
+		
+		// Przesun kamere wg procentu postepu poziomu - obliczenie ze wzoru w przesunKamere() 
+		przesuwaneT³o.getCamera().position.x = ( pozycjaKameryProc * (pozycjaKameryPxEnd - pozycjaKameryPxStart)) + pozycjaKameryPxStart;
 	}
 
 	@Override

@@ -22,7 +22,7 @@ public class Przeciwnik {
 		
 	}
 	
-	public void wyswietl()
+	public void draw()
 	{
 		NarzedziaBitmapy.wyswietlBitmape(PrzechowalniaAssets.spritePrzeciwnik, x, y);
 	}

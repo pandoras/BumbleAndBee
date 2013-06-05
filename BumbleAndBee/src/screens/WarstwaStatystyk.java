@@ -1,5 +1,6 @@
 package screens;
 
+import modele.Zycia;
 import zdazenia.Punktuj;
 import zdazenia.RejestratorPunktacji;
 import zdazenia.Powiadamiacz;
@@ -10,18 +11,33 @@ import inne.PrzechowalniaAssets;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.Pixmap.Format;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.majapiotr.bumbleandbee.BumbleAndBee;
 
 public class WarstwaStatystyk extends Warstwa implements RejestratorPunktacji {
 	
-	public static final int MONETA_X = 80;	
-	public static final int MONETA_Y_TOP = 70;
+	public static final int ZYCIA_X = 10;
+	public static final int ZYCIA_Y_TOP = 70;
 	
-	public static final int MIOD_X = 220;	
-	public static final int MIOD_Y_TOP = 70;	
+	public static final int MONETA_X = 180;	
+	public static final int ILE_MONET_X = MONETA_X + 35;	
+	public static final int MONETA_Y_TOP = ZYCIA_Y_TOP;
+	
+	public static final int MIOD_X = 260;	
+	public static final int ILE_MIODU_X = MIOD_X + 45;	
+	public static final int MIOD_Y_TOP = ZYCIA_Y_TOP;	
+		
+	public static final int ILE_Y_TOP = ZYCIA_Y_TOP-5;	
+	
+	public static final int CZAS_Y_TOP = 10;
 	
 	PostepPoziomu postepPoziomu;
 	
@@ -30,6 +46,9 @@ public class WarstwaStatystyk extends Warstwa implements RejestratorPunktacji {
 	
 	public int ileMonet = 0;
 	public int ileMiodu = 0;	
+
+	Label labelIleMonet, labelIleMiodu, labelCzas;
+	Zycia posiadaneZycia;
 	
 	public WarstwaStatystyk(BumbleAndBee maingame)
 	{
@@ -40,54 +59,82 @@ public class WarstwaStatystyk extends Warstwa implements RejestratorPunktacji {
 		postepPoziomu = new PostepPoziomu();
 		addActor(postepPoziomu);	
 		
-		//---------------------------WYŒWIETLENIE INFORMACJI O LVL -------------------------------------
+		// przygotuj style dla aktorow
 		Skin skin = new Skin();
 		skin.add("default", new Label.LabelStyle(PrzechowalniaAssets.fontSegoeUI_Light32, new Color(1f, 1f, 1f, 1f)), Label.LabelStyle.class);
+		skin.add("maly", new Label.LabelStyle(PrzechowalniaAssets.fontSegoeUI14, new Color(1f, 1f, 1f, 1f)), Label.LabelStyle.class);
+		skin.add("mniejszy", new Label.LabelStyle(PrzechowalniaAssets.fontSegoeUI15, new Color(1f, 1f, 1f, 1f)), Label.LabelStyle.class);
+		skin.add("duzy", new Label.LabelStyle(PrzechowalniaAssets.fontSegoeUI72, new Color(1f, 1f, 1f, 1f)), Label.LabelStyle.class);
+		
+		//---------------------------WYŒWIETLENIE INFORMACJI O LVL -------------------------------------
 		// bez podania nazwy stylu uzyje stylu 'default'
 		Label nazwaPoziomu = new Label("Poziom: 1",skin);
 		nazwaPoziomu.setX(SkalowalnyEkran.BASE_WIDTH-nazwaPoziomu.getWidth()-20);
 		nazwaPoziomu.setY(SkalowalnyEkran.BASE_HEIGHT-nazwaPoziomu.getHeight());
-		addActor(nazwaPoziomu);	
-		
-		skin.add("mniejszy", new Label.LabelStyle(PrzechowalniaAssets.fontSegoeUI14, new Color(1f, 1f, 1f, 1f)), Label.LabelStyle.class);
-		// uzyj stylu 'mniejszy'
-		Label trudnosc = new Label("Poziom trudnoœci: £atwy",skin,"mniejszy");
+		addActor(nazwaPoziomu);			
+
+		// uzyj stylu 'maly'
+		Label trudnosc = new Label("Poziom trudnoœci: £atwy",skin,"maly");
 		trudnosc.setX(SkalowalnyEkran.BASE_WIDTH-trudnosc.getWidth()-10);
 		trudnosc.setY(SkalowalnyEkran.BASE_HEIGHT-trudnosc.getHeight()-nazwaPoziomu.getHeight());		
 		addActor(trudnosc);
 		//---------------------------koniec WYŒWIETLENIE INFORMACJI O LVL -------------------------------------		
+		
+		//--------------------------- WYŒWIETLENIE ZMIENNYCH -------------------------------------
+		labelIleMonet = new Label(": 0",skin,"mniejszy");
+		labelIleMonet.setX(ILE_MONET_X);
+		labelIleMonet.setY(SkalowalnyEkran.BASE_HEIGHT-ILE_Y_TOP);		
+		addActor(labelIleMonet);
+
+		labelIleMiodu = new Label(": 0",skin,"mniejszy");
+		labelIleMiodu.setX(ILE_MIODU_X);
+		labelIleMiodu.setY(SkalowalnyEkran.BASE_HEIGHT-ILE_Y_TOP);		
+		addActor(labelIleMiodu);		
+		
+		Image moneta = new Image(new TextureRegion(new Texture(Gdx.files.internal("data/moneta.png"))));
+		moneta.setX(WarstwaStatystyk.MONETA_X);
+		moneta.setY(Gdx.graphics.getHeight() - WarstwaStatystyk.MONETA_Y_TOP);
+		addActor(moneta);
+		
+		Image miod = new Image(new TextureRegion(new Texture(Gdx.files.internal("data/miod.png"))));
+		miod.setX(WarstwaStatystyk.MIOD_X);
+		miod.setY(Gdx.graphics.getHeight() - WarstwaStatystyk.MIOD_Y_TOP);
+		addActor(miod);		
+		
+		// zycia
+		posiadaneZycia = new Zycia(4);
+		posiadaneZycia.setX(ZYCIA_X);
+		posiadaneZycia.setY(Gdx.graphics.getHeight() - ZYCIA_Y_TOP);
+		addActor(posiadaneZycia);			
+		//--------------------------- koniec WYŒWIETLENIE ZMIENNYCH -------------------------------------
+		
+		// czas
+		labelCzas = new Label(czas(),skin,"duzy");
+		labelCzas.setX((SkalowalnyEkran.BASE_WIDTH - labelCzas.getWidth())/2);
+		labelCzas.setY(SkalowalnyEkran.BASE_HEIGHT - labelCzas.getHeight() - CZAS_Y_TOP);		
+		addActor(labelCzas);			
+
 	}
 	
-	public void render(float delta, float pozycjaKameryProc)
+	public void act(float delta, float pozycjaKameryProc)
 	{
+		labelCzas.setText(czas());
 		postepPoziomu.ustawProcent(pozycjaKameryProc);
-		this.act(delta);		
-		this.draw();		
+		super.act(delta);			
+	}	
+
+	
+	@Override
+	public void draw () {
+		super.draw();		
 		
 		//Tester.narysujGraniceObiektu(pszczola);		
 		//for (int i = miodki.size()-1; i>=0; i--)	
 		//	Tester.narysujGraniceObiektu(miodki.get(i));	
-		
-		// to wszystko trzeba dodac do Stage zeby sie samo rysowalo
-		
-		// RYSOWANIE TEKSTU
-		NarzedziaBitmapy.wyswietlText(PrzechowalniaAssets.fontSegoeUI15, ": "+ileMonet, 110, Gdx.graphics.getHeight() - 45, 1f, 1f, 1f, 1f);
-		NarzedziaBitmapy.wyswietlText(PrzechowalniaAssets.fontSegoeUI15, ": "+ileMiodu, 260, Gdx.graphics.getHeight() - 45, 1f, 1f, 1f, 1f);
-		
-		// RYSOWANIE CZASU
-		NarzedziaBitmapy.wyswietlText(PrzechowalniaAssets.fontSegoeUI72, czas(), Gdx.graphics.getWidth() / 2 - 72, Gdx.graphics.getHeight() - 10, 1f, 1f, 1f, 1f);
-		
-				
-		// RYSOWANIE MONETY, SERC, MIODKU
-		NarzedziaBitmapy.wyswietlBitmape(PrzechowalniaAssets.spriteMoneta, WarstwaStatystyk.MONETA_X, Gdx.graphics.getHeight() - WarstwaStatystyk.MONETA_Y_TOP);
-		NarzedziaBitmapy.wyswietlBitmape(PrzechowalniaAssets.spritePosiadaneHP, 10, Gdx.graphics.getHeight() - 70);
-		NarzedziaBitmapy.wyswietlBitmape(PrzechowalniaAssets.spriteStraconePosiadaneHP, 45, Gdx.graphics.getHeight() - 70);
-		NarzedziaBitmapy.wyswietlBitmape(PrzechowalniaAssets.spriteMiod, WarstwaStatystyk.MIOD_X, Gdx.graphics.getHeight() -  WarstwaStatystyk.MIOD_Y_TOP);
-			
+
 		// RYSOWANIE PASKA HP
 		interfejsHP.wyswietlHP();		
 	}
-	
 	
 	public String czas() {
 		// DZIELE PRZEZ 10^-9 BO NANOTIME
@@ -103,9 +150,15 @@ public class WarstwaStatystyk extends Warstwa implements RejestratorPunktacji {
 	public void naZmianePunktacji(Punktuj rodzaj) {
 		
 		if (rodzaj == Punktuj.miod)
+		{
 			ileMiodu++;
+			labelIleMiodu.setText(": "+ ileMiodu);			
+		}
 		if (rodzaj == Punktuj.monety)
+		{
 			ileMonet++;
+			labelIleMonet.setText(": "+ ileMonet);
+		}
 		
 	}	
 

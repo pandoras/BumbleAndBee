@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class PrzechowalniaAssets {
 
@@ -22,10 +23,11 @@ public class PrzechowalniaAssets {
 	public static Sprite spritePrzeciwnik;
 	public static Sprite spritePszczola;
 	public static Sprite spriteMoneta;
-	public static Sprite spritePosiadaneHP;
-	public static Sprite spriteStraconePosiadaneHP;
 	public static Sprite spriteMiod;
 	public static Sprite spriteZadlo;
+	
+	public static TextureRegion posiadaneZycie;
+	public static TextureRegion straconeZycie;
 	
 	// indeksy przyciskow
 	public static final int przyciskStart = 0;
@@ -55,11 +57,12 @@ public class PrzechowalniaAssets {
 		
 		spritePszczola = NarzedziaBitmapy.wczytajBitmape("data/pszczola.png");
 		spriteMoneta = NarzedziaBitmapy.wczytajBitmape("data/moneta.png");
-		spritePosiadaneHP = NarzedziaBitmapy.wczytajBitmape("data/posiadane_zycie.png");
-		spriteStraconePosiadaneHP = NarzedziaBitmapy.wczytajBitmape("data/stracone_zycie.png");
 		spriteMiod = NarzedziaBitmapy.wczytajBitmape("data/miod.png");
 		spritePrzeciwnik = NarzedziaBitmapy.wczytajBitmape("data/trzmiel.png");
 		spriteZadlo = NarzedziaBitmapy.wczytajBitmape("data/zadlo.png");
+		
+		posiadaneZycie = new TextureRegion(new Texture(Gdx.files.internal("data/posiadane_zycie.png")));
+		straconeZycie = new TextureRegion(new Texture(Gdx.files.internal("data/stracone_zycie.png")));
 		
 
 	

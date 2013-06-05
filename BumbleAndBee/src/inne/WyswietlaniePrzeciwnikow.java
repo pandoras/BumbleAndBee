@@ -25,9 +25,8 @@ public class WyswietlaniePrzeciwnikow {
 		rand = new Random();
 		mnoznikNaSekunde = 1;
 	}
-	public void obslugaPrzeciwnikow() {
+	public void act() {
 		dodajPrzeciwnika();
-		wyswietlPrzeciwnikow();
 		kasujNiewidocznychPrzeciwnikow();
 	}
 	
@@ -43,9 +42,9 @@ public class WyswietlaniePrzeciwnikow {
 		}
 	}
 	
-	private void wyswietlPrzeciwnikow() {
+	public void draw() {
 		for (int i = 0; i < przeciwnicy.size(); i++) {
-			przeciwnicy.get(i).wyswietl();
+			przeciwnicy.get(i).draw();
 			przeciwnicy.get(i).przesun(szybkoscPoruszania);
 		}
 	}
