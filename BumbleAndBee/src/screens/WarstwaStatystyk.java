@@ -1,22 +1,19 @@
 package screens;
 
+import nieuzywane.ISluchaczKlawiszy;
+import modele.Pszczola;
 import modele.Zycia;
 import zdazenia.Punktuj;
 import zdazenia.RejestratorPunktacji;
-import zdazenia.Powiadamiacz;
 import inne.InterfejsHP;
-import inne.NarzedziaBitmapy;
 import inne.PostepPoziomu;
 import inne.PrzechowalniaAssets;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.Pixmap.Format;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -53,11 +50,12 @@ public class WarstwaStatystyk extends Warstwa implements RejestratorPunktacji {
 	Label labelIleMonet, labelIleMiodu, labelCzas;
 	Zycia posiadaneZycia;
 	
+	
 	public WarstwaStatystyk(BumbleAndBee maingame)
 	{
-		super(SkalowalnyEkran.BASE_WIDTH, maingame);
+		super(SkalowalnyEkran.BASE_WIDTH,  SkalowalnyEkran.BASE_HEIGHT, maingame);
 		
-		gra.powiadamiacz.addListener(this);
+		gra.powiadamiacz.dodajSluchaczaPunktacji(this);	
 		
 		postepPoziomu = new PostepPoziomu();
 		addActor(postepPoziomu);	
@@ -121,7 +119,6 @@ public class WarstwaStatystyk extends Warstwa implements RejestratorPunktacji {
 		interfejsHP.setX(PASEKHP_X);
 		interfejsHP.setY(SkalowalnyEkran.BASE_HEIGHT - PASEKHP_Y_TOP);
 		addActor(interfejsHP);
-
 	}
 	
 	public void act(float delta, float pozycjaKameryProc)
@@ -167,5 +164,10 @@ public class WarstwaStatystyk extends Warstwa implements RejestratorPunktacji {
 		
 	}	
 
-	
+	@Override
+	public TypWarstwy pobierzTyp()
+	{
+		return TypWarstwy.statystyki;
+	}	
+
 }

@@ -1,6 +1,7 @@
 package screens;
 
 
+import inne.Dyrektor;
 import modele.Pszczola;
 
 import com.badlogic.gdx.Gdx;
@@ -21,49 +22,83 @@ public class Level extends SkalowalnyEkran  {
 	// mamy na razie 2 warstwy, menu na pauze albo koniec levelu bedzie 3-cia warstwa
 	private WarstwaTla przesuwaneT³o;
 	private WarstwaStatystyk statystyki;
+	public WarstwaPauzy warstwaPauzy;
+	public Warstwa warstwaPodsumowania, warstwaSklepu;
 	
 	// kamera jest w pozycji 0 na poczatku poziomu a w pozycji 1 na koncu
 	private float pozycjaKameryProc;
 	
 	// pozycja kamery w pikselach na poczatku i koncu levelu (trzeba przeliczyc na resize)
 	float pozycjaKameryPxStart, pozycjaKameryPxEnd; 
-			
-	Pszczola pszczola;	
+	
+	public Pszczola pszczola;		
+	Dyrektor dyrektor; 
 	
 	public Level (BumbleAndBee gra,IPrzycisk przycisk)
 	{
 		super(gra);
 		przyciskStrzalu = przycisk;
+		// warstwa przesuwanego tla i statystyk sa wyswietlane w czasie gry
 		przesuwaneT³o = new WarstwaTla(WIDTH_MULTIPLIER, gra);
 		statystyki = new WarstwaStatystyk(gra);
 		
-		pozycjaKameryProc = 0;
+		// inne warstwy
+		warstwaPauzy = new WarstwaPauzy(gra);
+		warstwaPodsumowania = new WarstwaPodsumowania(gra);
+		warstwaSklepu = new WarstwaSklepu(gra);
 		
 		pszczola = new Pszczola(100, 100);
-		statystyki.addActor(pszczola);
+		// pszczole bedziemy rysowac na warstwie statystyk bo sie nie ma przesuwac z kamera
+		statystyki.addActor(pszczola);		
 		
-		// TODO: to trzeba zrobic zamiast sprawdzac spacjê w pszczole
-		//Gdx.input.setInputProcessor(new Dyrektor());			
+		// wszelki input idzie do dyrektora
+		dyrektor = new Dyrektor(this);
+		dyrektor.ustawAktywnaWarstwe(przesuwaneT³o);		
+		Gdx.input.setInputProcessor(dyrektor);	
+		
+		pozycjaKameryProc = 0;
+				
+		//gra.powiadamiacz.dodajSluchaczaKlawiszy(pszczola);
     }
 	
 	@Override
 	public void render(float delta) 
 	{
-		super.render(delta);
-
-		przesunKamere(delta);
+		super.render(delta);	
 		
-		// odswierz i narysuj wszystkie poziomy (jest tak pozdielione bo na pause nie robi sie act(), tylko draw())
-		przesuwaneT³o.act(Math.min(Gdx.graphics.getDeltaTime(), 1/30f));	
-		przesuwaneT³o.draw();
+		// odswierz i narysuj wszystkie poziomy (jest tak pozdielione bo na pause nie robi sie act(), tylko draw())		
 		
-		statystyki.act(Math.min(Gdx.graphics.getDeltaTime(), 1/30f), pozycjaKameryProc);
+		if (dyrektor.aktywnaWarstwa == TypWarstwy.tlo || dyrektor.aktywnaWarstwa == TypWarstwy.statystyki )
+		{
+			// odswierz pozycje pszczoly w levelu
+			pszczola.odswierzPozycje(przesuwaneT³o.getCamera().position.x-BASE_WIDTH/2 , delta);			
+			przesuwaneT³o.sprawdzKolizje(pszczola);
+			
+			przesunKamere(delta);
+			przesuwaneT³o.act(Math.min(Gdx.graphics.getDeltaTime(), 1/30f));	
+			statystyki.act(Math.min(Gdx.graphics.getDeltaTime(), 1/30f), pozycjaKameryProc);
+		}
+		
+		przesuwaneT³o.draw();				
 		statystyki.draw();
 		
-		// odswierz pozycje pszczoly w levelu
-		this.pszczola.odswierzPozycje(przesuwaneT³o.getCamera().position.x-BASE_WIDTH/2 , delta);
+		if (dyrektor.aktywnaWarstwa == TypWarstwy.pauza)
+		{
+			warstwaPauzy.act(delta);
+			warstwaPauzy.draw();
+		}
 		
-		przesuwaneT³o.sprawdzKolizje(pszczola);
+		else if (dyrektor.aktywnaWarstwa == TypWarstwy.podsumowanie)
+		{
+			warstwaPodsumowania.act(delta);
+			warstwaPodsumowania.draw();
+		}
+		
+		else if (dyrektor.aktywnaWarstwa == TypWarstwy.sklep)
+		{
+			warstwaSklepu.act(delta);
+			warstwaSklepu.draw();
+		}		
 	}
 	
 	public void przesunKamere(float delta)
@@ -95,7 +130,7 @@ public class Level extends SkalowalnyEkran  {
 		pozycjaKameryProc = (przesuwaneT³o.getCamera().position.x - pozycjaKameryPxStart) / (pozycjaKameryPxEnd - pozycjaKameryPxStart);
 		if (pozycjaKameryProc>=1f)
 		{	
-			gra.pokazMenu();
+			dyrektor.ustawAktywnaWarstwe(TypWarstwy.podsumowanie);
 			return;
 		}	
 	}

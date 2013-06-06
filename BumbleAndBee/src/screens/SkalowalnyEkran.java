@@ -11,7 +11,7 @@ public class SkalowalnyEkran  implements Screen {
 	public static final int BASE_WIDTH = 1200;
 	public static final int BASE_HEIGHT = 700;
 	
-	protected BumbleAndBee gra;
+	public BumbleAndBee gra;
 	
 	public SkalowalnyEkran(final BumbleAndBee maingame)
 	{

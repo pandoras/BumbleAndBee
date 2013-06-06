@@ -16,17 +16,18 @@ public class BumbleAndBee extends Game {
 	{
 		super();
 		przyciskStrzalu = przycisk;
-		powiadamiacz = new Powiadamiacz();
+		powiadamiacz = new Powiadamiacz();			
 	}
 	
 	@Override
 	public void create() {		
 		this.setScreen(new SplashScreen(this));
+		
 		PrzechowalniaAssets.load();
 		Tester.init();
 		setScreen(new MainMenu(this));
 	}
-
+    
 	@Override
 	public void dispose() {
 		super.dispose();

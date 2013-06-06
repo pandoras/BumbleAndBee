@@ -1,6 +1,7 @@
 package screens;
 
 import zdazenia.Punktuj;
+import inne.PrzechowalniaAssets;
 import inne.Tester;
 import inne.WyswietlaniePrzeciwnikow;
 import modele.KolekcjaObiektow;
@@ -14,6 +15,7 @@ import com.badlogic.gdx.graphics.Pixmap.Format;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.majapiotr.bumbleandbee.BumbleAndBee;
 
 public class WarstwaTla extends Warstwa {
@@ -28,7 +30,7 @@ public class WarstwaTla extends Warstwa {
 	
 	public WarstwaTla(int mnoznikDlugosci, BumbleAndBee maingame)
 	{
-		super(SkalowalnyEkran.BASE_WIDTH * mnoznikDlugosci, maingame);
+		super(SkalowalnyEkran.BASE_WIDTH * mnoznikDlugosci,  SkalowalnyEkran.BASE_HEIGHT, maingame);
 		szerokoscPoziomu = SkalowalnyEkran.BASE_WIDTH * mnoznikDlugosci;
 		
 		// zainicjuj teksturê t³a
@@ -62,7 +64,12 @@ public class WarstwaTla extends Warstwa {
 		miodki.stworz(100, 200, SkalowalnyEkran.BASE_WIDTH * mnoznikDlugosci, SkalowalnyEkran.BASE_HEIGHT, this);
 		
 		monety = new KolekcjaObiektow( null, "data/moneta.png",WarstwaStatystyk.MONETA_X,WarstwaStatystyk.MONETA_Y_TOP, Punktuj.monety);	
-		monety.stworz(100, 200, SkalowalnyEkran.BASE_WIDTH * mnoznikDlugosci, SkalowalnyEkran.BASE_HEIGHT, this);		
+		monety.stworz(100, 200, SkalowalnyEkran.BASE_WIDTH * mnoznikDlugosci, SkalowalnyEkran.BASE_HEIGHT, this);	
+		
+		Image ul = new Image(PrzechowalniaAssets.ul);
+		//obrazki[ilosc].setTransform(true);
+		ul.setBounds(szerokoscPoziomu-PrzechowalniaAssets.ul.getRegionWidth() - 10, 0, PrzechowalniaAssets.ul.getRegionWidth(), PrzechowalniaAssets.ul.getRegionHeight());
+		this.addActor(ul);
 	}
 	
 	@Override
@@ -78,12 +85,12 @@ public class WarstwaTla extends Warstwa {
 	@Override
 	public void draw()
 	{
-		// narysuj ostatni ekran
 		SpriteBatch batch = this.getSpriteBatch();
 		batch.begin();
 		batch.draw(teksturaT³a, 0, 0, szerokoscPoziomu, SkalowalnyEkran.BASE_HEIGHT) ;
 		
-		batch.draw(Tester.debugTexture,  szerokoscPoziomu-SkalowalnyEkran.BASE_WIDTH, 0, SkalowalnyEkran.BASE_WIDTH, SkalowalnyEkran.BASE_HEIGHT) ;
+		// ostatni ekran
+		//batch.draw(Tester.debugTexture,  szerokoscPoziomu-SkalowalnyEkran.BASE_WIDTH, 0, SkalowalnyEkran.BASE_WIDTH, SkalowalnyEkran.BASE_HEIGHT) ;
 		batch.end();
 		
 		super.draw();
@@ -96,4 +103,9 @@ public class WarstwaTla extends Warstwa {
 		monety.sprawdzKolizje(pszczola);			
 	}	
 	
+	@Override
+	public TypWarstwy pobierzTyp()
+	{
+		return TypWarstwy.tlo;
+	}		
 }

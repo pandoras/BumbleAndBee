@@ -1,6 +1,12 @@
 package modele;
 
-import inne.NarzedziaBitmapy;
+import java.util.HashSet;
+
+import screens.SkalowalnyEkran;
+
+import nieuzywane.ISluchaczKlawiszy;
+
+
 import inne.PrzechowalniaAssets;
 
 import com.badlogic.gdx.Gdx;
@@ -11,18 +17,38 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.scenes.scene2d.Event;
+import com.badlogic.gdx.scenes.scene2d.EventListener;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputEvent.Type;
 
-public class Pszczola extends AnimowanyObiekt implements IObiekt {
+public class Pszczola extends AnimowanyObiekt implements IObiekt  {
 
 	// pozycja do rysowania na ekranie
 	float ekranowyx = 100;
+	
+	static final int MIN_Y = 50;
+	static final int MAX_Y = SkalowalnyEkran.BASE_HEIGHT-120;
+	static final int MIN_X = 10;
+	static final int MAX_X = SkalowalnyEkran.BASE_WIDTH-100;
 	
 	private int pixeliNaSekunde = 100;
 	Zadlo zadlo;
 	public Body cialo = null;
 	Polygon granice;
 	
+	// jezeli ten wektor jest niezerowy to znaczy ze trzeba sie przemiescic
+	Vector2 trwaPrzemieszczenie; 
+	
+	public final HashSet<Integer> klawisze = new HashSet<Integer>() {{ 
+		add(Keys.DPAD_LEFT);
+		add(Keys.DPAD_RIGHT);
+		add(Keys.DPAD_UP);
+		add(Keys.DPAD_DOWN);
+		add(Keys.SPACE); }} ;
 	
 	public Pszczola(float startx, float starty) {
 		    
@@ -53,28 +79,33 @@ public class Pszczola extends AnimowanyObiekt implements IObiekt {
 				 76.26559800f, 8.86548262f,
 				 63.63623900f, 12.18108262f,
 				 42.55311700f, 0.28308262f};
-		granice=new Polygon(vertice);		
+		granice=new Polygon(vertice);	
+		
+		trwaPrzemieszczenie = new Vector2(0,0);
 	}
 	
 	public void odswierzPozycje(float poczatekEkranu, float deltaTime)
 	{
-		float y = this.getY();
+		float y = this.getY() + trwaPrzemieszczenie.y * deltaTime * this.pixeliNaSekunde;
+		if (MIN_Y<=y && y<=MAX_Y )
+			this.setY( y );
 		
-		if (Gdx.input.isKeyPressed(Keys.DPAD_LEFT) && ekranowyx!=0) {
-			this.ekranowyx -= deltaTime*this.pixeliNaSekunde;
-		}
-		if (Gdx.input.isKeyPressed(Keys.DPAD_RIGHT) && ekranowyx!=1120) {
-			this.ekranowyx += deltaTime*this.pixeliNaSekunde;
-		}
-		if (Gdx.input.isKeyPressed(Keys.DPAD_UP) && y!=570) {
-			this.setY( y + deltaTime*this.pixeliNaSekunde);
-		}
-		if (Gdx.input.isKeyPressed(Keys.DPAD_DOWN) && y!=50) {
-			this.setY( y - deltaTime*this.pixeliNaSekunde);
-		}	
+		float nowyx = this.ekranowyx + trwaPrzemieszczenie.x * deltaTime * this.pixeliNaSekunde;
+		if (MIN_X<=nowyx && nowyx<=MAX_X )
+			this.ekranowyx = nowyx;
 		
 		// pozycja pszczoly w levelu / na scenie
 		this.setX( poczatekEkranu + this.ekranowyx);
+
+		
+		// if a finger is down, set the sprite's x/y coordinate.
+		if (Gdx.input.isTouched()) {
+			// the unproject method takes a Vector3 in window coordinates (origin in
+			// upper left corner, y-axis pointing down) and transforms it to world
+			// coordinates.
+			Vector3 touchPos = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
+			this.getStage().getCamera().unproject(touchPos);
+		}
 		
 		if (Gdx.input.isKeyPressed(Keys.SPACE) && zadlo.pozaEkranem()){
 			zadlo.wysun(this);
@@ -118,4 +149,76 @@ public class Pszczola extends AnimowanyObiekt implements IObiekt {
 			zadlo.draw(batch);
 		}
 	}
+
+	/*
+	@Override
+	public boolean handle(Event event) {
+		
+		if (!(event instanceof InputEvent)) 
+			return false;
+		
+		InputEvent inputEvent = (InputEvent)event;
+		Type eventType = inputEvent.getType();
+		if (eventType == Type.keyDown) {
+			int klawisz = inputEvent.getKeyCode();
+			
+			if (!klawisze.contains(klawisz))
+				return false;
+			
+			if (klawisz == Keys.DPAD_UP)
+				trwaPrzemieszczenie.y = 1;
+			else if (klawisz == Keys.DPAD_DOWN)
+				trwaPrzemieszczenie.y = -1;
+			else if (klawisz == Keys.DPAD_RIGHT)
+				trwaPrzemieszczenie.x = 1;
+			else if (klawisz == Keys.DPAD_LEFT)
+				trwaPrzemieszczenie.x = -1;				
+			
+			return true;
+		}
+		if (eventType == Type.keyUp) {
+			int klawisz = inputEvent.getKeyCode();
+			
+			if (!klawisze.contains(klawisz))
+				return false;
+			
+			if (klawisz == Keys.DPAD_UP || klawisz == Keys.DPAD_DOWN)
+			{
+				trwaPrzemieszczenie.y = 0;
+				return true;
+			}
+			if (klawisz == Keys.DPAD_RIGHT || klawisz == Keys.DPAD_LEFT)
+			{
+				trwaPrzemieszczenie.x = 0;
+				return true;
+			}				
+			
+		}
+		return false;
+	}
+	*/
+	
+	public void obsluzKlawisz( Type eventType, int klawisz) {
+		
+		if (eventType == Type.keyDown) {
+					
+			if (klawisz == Keys.DPAD_UP)
+				trwaPrzemieszczenie.y = 1;
+			else if (klawisz == Keys.DPAD_DOWN)
+				trwaPrzemieszczenie.y = -1;
+			else if (klawisz == Keys.DPAD_RIGHT)
+				trwaPrzemieszczenie.x = 1;
+			else if (klawisz == Keys.DPAD_LEFT)
+				trwaPrzemieszczenie.x = -1;				
+		}
+		else if (eventType == Type.keyUp) {
+			
+			if (klawisz == Keys.DPAD_UP || klawisz == Keys.DPAD_DOWN)
+				trwaPrzemieszczenie.y = 0;
+			else if (klawisz == Keys.DPAD_RIGHT || klawisz == Keys.DPAD_LEFT)
+				trwaPrzemieszczenie.x = 0;			
+		}
+	}
+
+
 }
