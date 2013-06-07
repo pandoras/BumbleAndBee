@@ -37,17 +37,21 @@ public class Level extends SkalowalnyEkran  {
 	{
 		super(gra);
 		przyciskStrzalu = przycisk;
+		
+		// wszelki input idzie do dyrektora
+		dyrektor = new Dyrektor(this);
+		
 		// warstwa przesuwanego tla i statystyk sa wyswietlane w czasie gry
-		przesuwaneT³o = new WarstwaTla(WIDTH_MULTIPLIER, gra);
-		statystyki = new WarstwaStatystyk(gra);
+		statystyki = new WarstwaStatystyk(gra, dyrektor);
+		przesuwaneT³o = new WarstwaTla(WIDTH_MULTIPLIER, gra, statystyki.pszczola);
+		
 		
 		// inne warstwy
 		warstwaPauzy = new WarstwaPauzy(gra);
 		warstwaPodsumowania = new WarstwaPodsumowania(gra);
 		warstwaSklepu = new WarstwaSklepu(gra);
 				
-		// wszelki input idzie do dyrektora
-		dyrektor = new Dyrektor(this);
+
 		dyrektor.ustawAktywnaWarstwe(statystyki);		
 		
 		pozycjaKameryProc = 0;

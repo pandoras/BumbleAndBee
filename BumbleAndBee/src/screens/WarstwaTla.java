@@ -3,8 +3,8 @@ package screens;
 import zdazenia.Punktuj;
 import inne.PrzechowalniaAssets;
 import inne.Tester;
-import inne.WyswietlaniePrzeciwnikow;
 import modele.KolekcjaObiektow;
+import modele.Przeciwnicy;
 import modele.Pszczola;
 
 import com.badlogic.gdx.Gdx;
@@ -23,12 +23,12 @@ public class WarstwaTla extends Warstwa {
 	/** monety i miodki **/
 	public KolekcjaObiektow monety;	
 	public KolekcjaObiektow miodki;
-	WyswietlaniePrzeciwnikow wyswietlaniePrzeciwnikow;
+	public Przeciwnicy przeciwnicy;
 	int szerokoscPoziomu;
 	// jednolita tekstura t³a
 	Texture teksturaT³a;
 	
-	public WarstwaTla(int mnoznikDlugosci, BumbleAndBee maingame)
+	public WarstwaTla(int mnoznikDlugosci, BumbleAndBee maingame, Pszczola bee)
 	{
 		super(SkalowalnyEkran.BASE_WIDTH * mnoznikDlugosci,  SkalowalnyEkran.BASE_HEIGHT, maingame);
 		szerokoscPoziomu = SkalowalnyEkran.BASE_WIDTH * mnoznikDlugosci;
@@ -38,9 +38,7 @@ public class WarstwaTla extends Warstwa {
 		p.setColor(new Color(0.15f, 0.58f, 0, 1));
 		p.fillRectangle(0, 0, 1, 1);	
 	    teksturaT³a = new Texture(p, Format.RGB888, false);		
-	    
-		wyswietlaniePrzeciwnikow = new WyswietlaniePrzeciwnikow();
-		
+	
 		// inicjujemy monety i miodki
 		miodki = new KolekcjaObiektow( new float[] 
 				{0.12626907f, 13.13198262f, 
@@ -66,6 +64,9 @@ public class WarstwaTla extends Warstwa {
 		monety = new KolekcjaObiektow( null, "data/moneta.png",WarstwaStatystyk.MONETA_X,WarstwaStatystyk.MONETA_Y_TOP, Punktuj.monety);	
 		monety.stworz(100, 200, SkalowalnyEkran.BASE_WIDTH * mnoznikDlugosci, SkalowalnyEkran.BASE_HEIGHT, this);	
 		
+		przeciwnicy = new Przeciwnicy(bee);
+		przeciwnicy.stworz(500, 200, SkalowalnyEkran.BASE_WIDTH * mnoznikDlugosci, SkalowalnyEkran.BASE_HEIGHT, this);
+		
 		Image ul = new Image(PrzechowalniaAssets.ul);
 		//obrazki[ilosc].setTransform(true);
 		ul.setBounds(szerokoscPoziomu-PrzechowalniaAssets.ul.getRegionWidth() - 10, 0, PrzechowalniaAssets.ul.getRegionWidth(), PrzechowalniaAssets.ul.getRegionHeight());
@@ -76,9 +77,6 @@ public class WarstwaTla extends Warstwa {
 	public void act(float delta)
 	{	
 		super.act(delta);
-		
-		// PRZECIWNICY
-		wyswietlaniePrzeciwnikow.act();		
 	}
 	
 	// nadpisujemy rysowanie bo chcemy rysowac t³o sami (moznaby tez dodac aktora ktory bedzie wielkim prostokatem ale...)
@@ -94,13 +92,12 @@ public class WarstwaTla extends Warstwa {
 		batch.end();
 		
 		super.draw();
-		
-		wyswietlaniePrzeciwnikow.draw();
 	}	
 	public void sprawdzKolizje(Pszczola pszczola)
 	{
 		miodki.sprawdzKolizje(pszczola);
-		monety.sprawdzKolizje(pszczola);			
+		monety.sprawdzKolizje(pszczola);
+		przeciwnicy.sprawdzKolizje(pszczola);
 	}	
 	
 	@Override

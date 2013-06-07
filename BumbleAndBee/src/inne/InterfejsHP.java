@@ -66,4 +66,21 @@ public class InterfejsHP extends Group {
 		batch.draw(teksturaBrakHP, getX()+szerokoscHP, getY()+2, szerokoscBrakHP-2, WYSOKOSC-5);
 		super.draw(batch, parentAlpha);
 	}
+	 
+	public void zmniejsz()
+	{
+		procentZdrowia -= 0.2f;
+	}
+	
+	public void ustawPelen()
+	{
+		procentZdrowia = 1f;
+	}	
+	
+	public boolean zero()
+	{
+		if (procentZdrowia<0.01f)
+			return true;
+		return false;
+	}
 }

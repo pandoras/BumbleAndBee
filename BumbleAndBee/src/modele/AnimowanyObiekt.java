@@ -18,7 +18,7 @@ import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 
 public class AnimowanyObiekt extends Group implements IObiekt {
 
-	TextureRegion obrazek;
+	protected TextureRegion obrazek;
 	Polygon granice = null;
 	
 	// dodatek w X do animacji zeby ladnie wygladalo jak zanika przesuwajac sie w lewo do finalnej pozycji
@@ -49,26 +49,8 @@ public class AnimowanyObiekt extends Group implements IObiekt {
 		batch.setColor(getColor());
 		batch.draw(obrazek, getX(), getY(), getOriginX(), getOriginY(), getWidth(), getHeight(), getScaleX(), getScaleY(),
 			getRotation());
-	/*	
-		if (animacjaUsuwania!=null && animacjaUsuwania.isAnimationFinished(czasAnimacjiUsuwania))
-		{
-			this.fire(new Event());
-			// Ensure you have a handler for this or the event pool will fill
-			// up.
-			this.getStage().sendEvent(AppEvents.EVENT_END_EXPLOSION, this);
-		}*/
 		super.draw(batch, parentAlpha);
 	}
-	
-    //Hit method is used to delegate touchDown, mouse, and enter/exit events. 
-    //If this method returns null, those events will not occur on this Actor.
-    /* DEFAULT:
-     *     public Actor hit(float x, float y, boolean touchable)
-     *     {
-     * 		  if (touchable && this.touchable != Touchable.enabled) return null;
-	 *        return x >= 0 && x < width && y >= 0 && y < height ? this : null;
-	 *     }    
-     */		
     
 	// pobierz pozycje x tego elementu na ekranie (do rysowania w debugu)
 	public float ekranowyX()

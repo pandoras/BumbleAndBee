@@ -5,6 +5,7 @@ import modele.Pszczola;
 import modele.Zycia;
 import zdazenia.Punktuj;
 import zdazenia.RejestratorPunktacji;
+import inne.Dyrektor;
 import inne.InterfejsHP;
 import inne.PostepPoziomu;
 import inne.PrzechowalniaAssets;
@@ -51,10 +52,13 @@ public class WarstwaStatystyk extends Warstwa implements RejestratorPunktacji {
 	Zycia posiadaneZycia;
 	public Pszczola pszczola;		
 	
-	public WarstwaStatystyk(BumbleAndBee maingame)
+	public Dyrektor dyrektor; 
+	
+	public WarstwaStatystyk(BumbleAndBee maingame, Dyrektor dyrektorPoziomu)
 	{
 		super(SkalowalnyEkran.BASE_WIDTH,  SkalowalnyEkran.BASE_HEIGHT, maingame);
 		
+		dyrektor = dyrektorPoziomu;
 		gra.powiadamiacz.dodajSluchaczaPunktacji(this);	
 		
 		postepPoziomu = new PostepPoziomu();
@@ -166,7 +170,17 @@ public class WarstwaStatystyk extends Warstwa implements RejestratorPunktacji {
 			ileMonet++;
 			labelIleMonet.setText(": "+ ileMonet);
 		}
-		
+		if (rodzaj == Punktuj.zycie)
+		{
+			interfejsHP.zmniejsz();
+			if (interfejsHP.zero())
+			{
+				if (!posiadaneZycia.zmniejszIKontynuuj())
+					dyrektor.ustawAktywnaWarstwe(TypWarstwy.podsumowanie);
+				else
+					interfejsHP.ustawPelen();
+			}
+		}		
 	}	
 
 	@Override

@@ -48,7 +48,7 @@ public class Zycia extends Group {
 	}
 	
 	/// zwraca false gdy nie ma juz wiecej zyc 
-	public boolean decrementAndTest()
+	public boolean zmniejszIKontynuuj()
 	{
 		if (ilosc==0)
 			return false;

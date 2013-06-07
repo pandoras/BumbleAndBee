@@ -19,7 +19,7 @@ import com.badlogic.gdx.utils.Pool;
 public class KolekcjaObiektow extends ArrayList<AnimowanyObiekt> {
 
 	TextureRegion region;
-	float[] wierzcholki;
+	float[] wierzcholki = null;
 	int finalDoX = 0;
 	int finalDoYtop = 0;	
 	Punktuj coPunktowac;
@@ -28,8 +28,9 @@ public class KolekcjaObiektow extends ArrayList<AnimowanyObiekt> {
 	public KolekcjaObiektow(float[] wierzcholkiKonturu, String sciezkaDoObrazka, int animujDoX, int animujDoYtop, Punktuj co )
 	{
 		// wywo³anie konstruktora klasy bazowej
-		super(); 		
-		region = new TextureRegion(new Texture(Gdx.files.internal(sciezkaDoObrazka)));
+		super(); 	
+		if (!sciezkaDoObrazka.isEmpty())
+			region = new TextureRegion(new Texture(Gdx.files.internal(sciezkaDoObrazka)));
 		wierzcholki = wierzcholkiKonturu;
 		
 		finalDoX = animujDoX;
