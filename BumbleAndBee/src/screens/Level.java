@@ -20,8 +20,8 @@ public class Level extends SkalowalnyEkran  {
 	IPrzycisk przyciskStrzalu;
 
 	// mamy na razie 2 warstwy, menu na pauze albo koniec levelu bedzie 3-cia warstwa
-	private WarstwaTla przesuwaneT這;
-	private WarstwaStatystyk statystyki;
+	public WarstwaTla przesuwaneT這;
+	public WarstwaStatystyk statystyki;
 	public WarstwaPauzy warstwaPauzy;
 	public Warstwa warstwaPodsumowania, warstwaSklepu;
 	
@@ -31,8 +31,7 @@ public class Level extends SkalowalnyEkran  {
 	// pozycja kamery w pikselach na poczatku i koncu levelu (trzeba przeliczyc na resize)
 	float pozycjaKameryPxStart, pozycjaKameryPxEnd; 
 	
-	public Pszczola pszczola;		
-	Dyrektor dyrektor; 
+	public Dyrektor dyrektor; 
 	
 	public Level (BumbleAndBee gra,IPrzycisk przycisk)
 	{
@@ -46,33 +45,26 @@ public class Level extends SkalowalnyEkran  {
 		warstwaPauzy = new WarstwaPauzy(gra);
 		warstwaPodsumowania = new WarstwaPodsumowania(gra);
 		warstwaSklepu = new WarstwaSklepu(gra);
-		
-		pszczola = new Pszczola(100, 100);
-		// pszczole bedziemy rysowac na warstwie statystyk bo sie nie ma przesuwac z kamera
-		statystyki.addActor(pszczola);		
-		
+				
 		// wszelki input idzie do dyrektora
 		dyrektor = new Dyrektor(this);
-		dyrektor.ustawAktywnaWarstwe(przesuwaneT這);		
-		Gdx.input.setInputProcessor(dyrektor);	
+		dyrektor.ustawAktywnaWarstwe(statystyki);		
 		
 		pozycjaKameryProc = 0;
-				
-		//gra.powiadamiacz.dodajSluchaczaKlawiszy(pszczola);
     }
 	
 	@Override
 	public void render(float delta) 
 	{
 		super.render(delta);	
-		
+			
 		// odswierz i narysuj wszystkie poziomy (jest tak pozdielione bo na pause nie robi sie act(), tylko draw())		
 		
 		if (dyrektor.aktywnaWarstwa == TypWarstwy.tlo || dyrektor.aktywnaWarstwa == TypWarstwy.statystyki )
 		{
 			// odswierz pozycje pszczoly w levelu
-			pszczola.odswierzPozycje(przesuwaneT這.getCamera().position.x-BASE_WIDTH/2 , delta);			
-			przesuwaneT這.sprawdzKolizje(pszczola);
+			statystyki.pszczola.odswierzPozycje(przesuwaneT這.getCamera().position.x-BASE_WIDTH/2 , delta);			
+			przesuwaneT這.sprawdzKolizje(statystyki.pszczola);
 			
 			przesunKamere(delta);
 			przesuwaneT這.act(Math.min(Gdx.graphics.getDeltaTime(), 1/30f));	

@@ -19,9 +19,9 @@ public class WarstwaPauzy extends Warstwa {
 		
 		Skin skin = new Skin(Gdx.files.internal("skin/uiskin.json"));
 		
-		buttonSklep = new TextButton("Sklep", skin, "toggle");
-		buttonMain = new TextButton("Ekran glowny", skin, "toggle");
-		buttonWznow = new TextButton("Wznow", skin, "toggle");
+		buttonSklep = new TextButton("Sklep", skin);
+		buttonMain = new TextButton("Ekran glowny", skin);
+		buttonWznow = new TextButton("Wznow", skin);
 		
 		Window window = new Window("Pauza", skin);
 		
@@ -45,7 +45,13 @@ public class WarstwaPauzy extends Warstwa {
 			public void changed (ChangeEvent event, Actor actor) {
 				gra.setScreen(new MainMenu(gra));
 			}
-		});		
+		});	
+		
+		buttonWznow.addListener(new ChangeListener() {
+			public void changed (ChangeEvent event, Actor actor) {
+				((Level)gra.getScreen()).dyrektor.ustawAktywnaWarstwe(TypWarstwy.statystyki);
+			}
+		});			
 	}
 	
 	@Override

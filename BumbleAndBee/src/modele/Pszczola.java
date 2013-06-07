@@ -25,7 +25,7 @@ import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputEvent.Type;
 
-public class Pszczola extends AnimowanyObiekt implements IObiekt  {
+public class Pszczola extends AnimowanyObiekt implements IObiekt, EventListener  {
 
 	// pozycja do rysowania na ekranie
 	float ekranowyx = 100;
@@ -82,6 +82,7 @@ public class Pszczola extends AnimowanyObiekt implements IObiekt  {
 		granice=new Polygon(vertice);	
 		
 		trwaPrzemieszczenie = new Vector2(0,0);
+		this.addListener(this);
 	}
 	
 	public void odswierzPozycje(float poczatekEkranu, float deltaTime)
@@ -150,7 +151,6 @@ public class Pszczola extends AnimowanyObiekt implements IObiekt  {
 		}
 	}
 
-	/*
 	@Override
 	public boolean handle(Event event) {
 		
@@ -159,44 +159,9 @@ public class Pszczola extends AnimowanyObiekt implements IObiekt  {
 		
 		InputEvent inputEvent = (InputEvent)event;
 		Type eventType = inputEvent.getType();
-		if (eventType == Type.keyDown) {
-			int klawisz = inputEvent.getKeyCode();
-			
-			if (!klawisze.contains(klawisz))
-				return false;
-			
-			if (klawisz == Keys.DPAD_UP)
-				trwaPrzemieszczenie.y = 1;
-			else if (klawisz == Keys.DPAD_DOWN)
-				trwaPrzemieszczenie.y = -1;
-			else if (klawisz == Keys.DPAD_RIGHT)
-				trwaPrzemieszczenie.x = 1;
-			else if (klawisz == Keys.DPAD_LEFT)
-				trwaPrzemieszczenie.x = -1;				
-			
-			return true;
-		}
-		if (eventType == Type.keyUp) {
-			int klawisz = inputEvent.getKeyCode();
-			
-			if (!klawisze.contains(klawisz))
-				return false;
-			
-			if (klawisz == Keys.DPAD_UP || klawisz == Keys.DPAD_DOWN)
-			{
-				trwaPrzemieszczenie.y = 0;
-				return true;
-			}
-			if (klawisz == Keys.DPAD_RIGHT || klawisz == Keys.DPAD_LEFT)
-			{
-				trwaPrzemieszczenie.x = 0;
-				return true;
-			}				
-			
-		}
+		obsluzKlawisz( inputEvent.getType(), inputEvent.getKeyCode());
 		return false;
 	}
-	*/
 	
 	public void obsluzKlawisz( Type eventType, int klawisz) {
 		
@@ -213,10 +178,34 @@ public class Pszczola extends AnimowanyObiekt implements IObiekt  {
 		}
 		else if (eventType == Type.keyUp) {
 			
-			if (klawisz == Keys.DPAD_UP || klawisz == Keys.DPAD_DOWN)
-				trwaPrzemieszczenie.y = 0;
-			else if (klawisz == Keys.DPAD_RIGHT || klawisz == Keys.DPAD_LEFT)
-				trwaPrzemieszczenie.x = 0;			
+			if (klawisz == Keys.DPAD_UP)
+			{
+				if (Gdx.input.isKeyPressed(Keys.DPAD_DOWN))
+					trwaPrzemieszczenie.y = -1;
+				else
+					trwaPrzemieszczenie.y = 0;
+			}
+			else if (klawisz == Keys.DPAD_DOWN)
+			{
+				if (Gdx.input.isKeyPressed(Keys.DPAD_UP))
+					trwaPrzemieszczenie.y = 1;
+				else
+					trwaPrzemieszczenie.y = 0;
+			}
+			else if (klawisz == Keys.DPAD_RIGHT)
+			{
+				if (Gdx.input.isKeyPressed(Keys.DPAD_LEFT))
+					trwaPrzemieszczenie.x = -1;
+				else				
+					trwaPrzemieszczenie.x = 0;
+			}
+			else if (klawisz == Keys.DPAD_LEFT)
+			{
+				if (Gdx.input.isKeyPressed(Keys.DPAD_RIGHT))
+					trwaPrzemieszczenie.x = 1;
+				else				
+					trwaPrzemieszczenie.x = 0;
+			}			
 		}
 	}
 

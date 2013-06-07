@@ -49,7 +49,7 @@ public class WarstwaStatystyk extends Warstwa implements RejestratorPunktacji {
 
 	Label labelIleMonet, labelIleMiodu, labelCzas;
 	Zycia posiadaneZycia;
-	
+	public Pszczola pszczola;		
 	
 	public WarstwaStatystyk(BumbleAndBee maingame)
 	{
@@ -119,6 +119,11 @@ public class WarstwaStatystyk extends Warstwa implements RejestratorPunktacji {
 		interfejsHP.setX(PASEKHP_X);
 		interfejsHP.setY(SkalowalnyEkran.BASE_HEIGHT - PASEKHP_Y_TOP);
 		addActor(interfejsHP);
+		
+		// pszczole bedziemy rysowac na warstwie statystyk bo sie nie ma przesuwac z kamera
+		pszczola = new Pszczola(100, 100);
+		this.addActor(pszczola);		
+		this.setKeyboardFocus(pszczola);		
 	}
 	
 	public void act(float delta, float pozycjaKameryProc)

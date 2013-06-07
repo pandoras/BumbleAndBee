@@ -15,6 +15,7 @@ public class BumbleAndBee extends Game {
 	public BumbleAndBee(IPrzycisk przycisk)
 	{
 		super();
+		
 		przyciskStrzalu = przycisk;
 		powiadamiacz = new Powiadamiacz();			
 	}
