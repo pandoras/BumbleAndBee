@@ -6,11 +6,14 @@ import inne.PrzechowalniaAssets;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.Align;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener.ChangeEvent;
 import com.badlogic.gdx.utils.Scaling;
 import com.majapiotr.bumbleandbee.BumbleAndBee;
 
@@ -51,8 +54,15 @@ public class WarstwaSklepu extends Warstwa {
 		for(int i = 0; i < 8; i++) {
 			Image kupImage = new Image(new TextureRegion(PrzechowalniaAssets.textureSklepKup));
 			kupButtons.add(kupImage);
-			kupButtons.get(i).setPosition(x, y);
+			kupButtons.get(i).setPosition(275 + (i % 4) * 193, 140 + 200 * (i / 4));
+			this.addActor(kupButtons.get(i));
 		}
+		
+		closeImage.addListener(new ChangeListener() {
+			public void changed (ChangeEvent event, Actor actor) {
+				((Level)gra.getScreen()).dyrektor.ustawAktywnaWarstwe(TypWarstwy.statystyki);
+			}
+		});		
 	}
 	
 	@Override
