@@ -78,7 +78,7 @@ public class Dyrektor implements InputProcessor  {
 		{			
 			if (keycode == Keys.ESCAPE)
 			{
-				ustawAktywnaWarstwe(TypWarstwy.tlo);
+				ustawAktywnaWarstwe(TypWarstwy.statystyki);
 				return true;
 			}
 		}	
