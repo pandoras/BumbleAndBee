@@ -41,6 +41,12 @@ public class WarstwaPauzy extends Warstwa {
 		window.setY((SkalowalnyEkran.BASE_HEIGHT-window.getHeight())/2);
 		this.addActor(window);
 		
+		buttonSklep.addListener(new ChangeListener() {
+			public void changed (ChangeEvent event, Actor actor) {
+				gra.setScreen(new Sklep(gra));
+			}
+		});	
+		
 		buttonMain.addListener(new ChangeListener() {
 			public void changed (ChangeEvent event, Actor actor) {
 				gra.setScreen(new MainMenu(gra));

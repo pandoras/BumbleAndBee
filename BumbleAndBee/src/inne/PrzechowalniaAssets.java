@@ -38,12 +38,15 @@ public class PrzechowalniaAssets {
 	// tabela tekstur przyciskow
 	public static  ArrayList<Texture> teksturyPrzyciskow;
 	public static Texture textureMenu;
+	public static Texture textureSklep;
 	
 	public static void load() {
 		
 		spriteBatch = new SpriteBatch();
 		
 		textureMenu = new Texture(Gdx.files.internal("menu/MainMenu.jpg"));
+		
+		textureSklep = new Texture(Gdx.files.internal("sklep/calosc.png"));
 		
 		// wazne: kolejnosc jak w stalych przyciskow
 		teksturyPrzyciskow = new ArrayList<Texture>(3);
