@@ -43,7 +43,7 @@ public class WarstwaPauzy extends Warstwa {
 		
 		buttonSklep.addListener(new ChangeListener() {
 			public void changed (ChangeEvent event, Actor actor) {
-				gra.setScreen(new Sklep(gra));
+				((Level)gra.getScreen()).dyrektor.ustawAktywnaWarstwe(TypWarstwy.sklep);
 			}
 		});	
 		

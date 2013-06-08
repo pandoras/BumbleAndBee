@@ -39,6 +39,8 @@ public class PrzechowalniaAssets {
 	public static  ArrayList<Texture> teksturyPrzyciskow;
 	public static Texture textureMenu;
 	public static Texture textureSklep;
+	public static TextureRegion textureSklepZamknij;
+	public static TextureRegion textureSklepKup;
 	
 	public static void load() {
 		
@@ -47,6 +49,8 @@ public class PrzechowalniaAssets {
 		textureMenu = new Texture(Gdx.files.internal("menu/MainMenu.jpg"));
 		
 		textureSklep = new Texture(Gdx.files.internal("sklep/calosc.png"));
+		textureSklepZamknij = new TextureRegion(new Texture(Gdx.files.internal("sklep/zamknij.png")));
+		textureSklepKup = new TextureRegion(new Texture(Gdx.files.internal("sklep/kup.png")));
 		
 		// wazne: kolejnosc jak w stalych przyciskow
 		teksturyPrzyciskow = new ArrayList<Texture>(3);
