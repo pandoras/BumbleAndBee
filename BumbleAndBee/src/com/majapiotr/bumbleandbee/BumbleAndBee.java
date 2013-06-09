@@ -8,6 +8,7 @@ import zdazenia.Dyrektor;
 import zdazenia.Powiadamiacz;
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
 public class BumbleAndBee extends Game {
@@ -59,7 +60,11 @@ public class BumbleAndBee extends Game {
 	
 	public void zacznijLevel()
 	{
-		setScreen(new Level(this));
+		Screen s = getScreen();
+		if (s instanceof Level)
+			((Level)s).zacznijNowy();
+		else
+			setScreen(new Level(this));
 	}
 	
 	public void pokazMenu()

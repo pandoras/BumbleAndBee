@@ -179,7 +179,7 @@ public class WarstwaStatystyk extends Warstwa implements RejestratorPunktacji {
 			if (interfejsHP.zero())
 			{
 				if (!posiadaneZycia.zmniejszIKontynuuj())
-					dyrektor.ustawAktywnaWarstwe(TypWarstwy.podsumowanie);
+					dyrektor.ustawAktywnaWarstwe(TypWarstwy.porazka);
 				else
 					interfejsHP.ustawPelen();
 			}

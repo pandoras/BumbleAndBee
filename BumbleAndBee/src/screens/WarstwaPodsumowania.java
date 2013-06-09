@@ -16,7 +16,7 @@ public class WarstwaPodsumowania extends Warstwa {
 		
 		Skin skin = new Skin(Gdx.files.internal("skin/window.json"));
 		Window window = new Window("DOLECIALES / ZGINALES", skin);
-		window.defaults().spaceBottom(10);
+		window.defaults().prefWidth(200).spaceBottom(10);
 		window.row().fill().expandX();
 		
 		window.setBounds((SkalowalnyEkran.BASE_WIDTH-WIDTH)/2,

@@ -17,7 +17,7 @@ public class Level extends SkalowalnyEkran  {
 	public WarstwaTla przesuwaneT³o;
 	public WarstwaStatystyk statystyki;
 	public WarstwaPauzy warstwaPauzy;
-	public Warstwa warstwaPodsumowania, warstwaSklepu;
+	public Warstwa warstwaPodsumowania, warstwaSklepu, warstwaPorazki;
 	
 	// kamera jest w pozycji 0 na poczatku poziomu a w pozycji 1 na koncu
 	private float pozycjaKameryProc;
@@ -43,6 +43,7 @@ public class Level extends SkalowalnyEkran  {
 		warstwaPauzy = new WarstwaPauzy(gra);
 		warstwaPodsumowania = new WarstwaPodsumowania(gra);
 		warstwaSklepu = new WarstwaSklepu(gra);
+		warstwaPorazki = new WarstwaPorazki(gra);
 				
 
 		dyrektor.ustawAktywnaWarstwe(statystyki);		
@@ -87,7 +88,12 @@ public class Level extends SkalowalnyEkran  {
 		{
 			warstwaSklepu.act(delta);
 			warstwaSklepu.draw();
-		}		
+		}
+		else if (dyrektor.aktywnaWarstwa == TypWarstwy.porazka)
+		{
+			warstwaPorazki.act(delta);
+			warstwaPorazki.draw();
+		}
 	}
 	
 	public void przesunKamere(float delta)
@@ -173,6 +179,11 @@ public class Level extends SkalowalnyEkran  {
 	@Override
 	public void dispose () {
 		//world.dispose();
+	}
+
+	public void zacznijNowy() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

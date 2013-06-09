@@ -67,11 +67,13 @@ public class InterfejsHP extends Group {
 	public void zmniejsz()
 	{
 		procentZdrowia -= 0.2f;
+		labelIle.setText(""+(int)(procentZdrowia*100)+"%");
 	}
 	
 	public void ustawPelen()
 	{
 		procentZdrowia = 1f;
+		labelIle.setText(""+(int)(procentZdrowia*100)+"%");
 	}	
 	
 	public boolean zero()

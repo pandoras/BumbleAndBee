@@ -49,7 +49,10 @@ public class Dyrektor implements InputProcessor  {
 				break;
 			case statystyki:
 				Gdx.input.setInputProcessor(new InputMultiplexer(poziom.statystyki, this));
-				break;				
+				break;			
+			case porazka:
+				Gdx.input.setInputProcessor(new InputMultiplexer( poziom.warstwaPorazki, this));
+				break;	
 		}
 	}
 	
