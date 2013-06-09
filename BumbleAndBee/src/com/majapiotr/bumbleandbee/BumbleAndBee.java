@@ -1,15 +1,17 @@
 package com.majapiotr.bumbleandbee;
 
+import modele.Pszczola;
 import inne.PrzechowalniaAssets;
 import inne.Tester;
 import screens.*;
 import zdazenia.Powiadamiacz;
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 
 public class BumbleAndBee extends Game {
 	
-	IPrzycisk przyciskStrzalu;
+	public IPrzycisk przyciskStrzalu;
 	public Powiadamiacz powiadamiacz;
 	
 	public BumbleAndBee(IPrzycisk przycisk)
@@ -62,5 +64,12 @@ public class BumbleAndBee extends Game {
 	public void pokazMenu()
 	{
 		setScreen(new MainMenu(this));
+	}
+	
+	public void dodajAktoraStrzalu(Warstwa warstwa, Pszczola pszczola)
+	{
+		Actor przycisk = przyciskStrzalu.stworzAktoraStrzalu(pszczola);
+		if (przycisk!=null)
+			warstwa.addActor(przycisk);
 	}
 }

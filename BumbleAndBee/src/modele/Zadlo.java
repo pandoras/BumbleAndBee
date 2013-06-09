@@ -45,7 +45,7 @@ public class Zadlo extends AnimowanyObiekt {
 	}
 	
 	public void wysun()
-	{
+	{			
 		przesunieciex = 80f;
 		//this.setBounds((int)pszczola.ekranowyx+80,(int)pszczola.getY()+20,obrazek.getRegionWidth(),obrazek.getRegionHeight());	
 		this.setBounds((int)pszczola.getX()+przesunieciex,(int)pszczola.getY()+20,obrazek.getRegionWidth(),obrazek.getRegionHeight());	

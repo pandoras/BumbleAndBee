@@ -37,15 +37,13 @@ public class PrzechowalniaAssets {
 	public static TextureRegion textureSklepZamknij;
 	public static TextureRegion textureSklepKup;
 	
+	public static TextureRegion textureStrzel;
+	
 	public static void load() {
 		
 		spriteBatch = new SpriteBatch();
 		
 		textureMenu = new Texture(Gdx.files.internal("menu/MainMenu.jpg"));
-		
-		textureSklep = new Texture(Gdx.files.internal("sklep/calosc.png"));
-		textureSklepZamknij = new TextureRegion(new Texture(Gdx.files.internal("sklep/zamknij.png")));
-		textureSklepKup = new TextureRegion(new Texture(Gdx.files.internal("sklep/kup.png")));
 		
 		textureSklep = new Texture(Gdx.files.internal("sklep/calosc.png"));
 		textureSklepZamknij = new TextureRegion(new Texture(Gdx.files.internal("sklep/zamknij.png")));
@@ -63,6 +61,7 @@ public class PrzechowalniaAssets {
 		fontSegoeUI72 = NarzedziaBitmapy.wczytajFont(72, "SegoeUI");	
 		fontSegoeUI_Light32 = NarzedziaBitmapy.wczytajFont(32, "SegoeUI_Light");
 
+		textureStrzel = new TextureRegion(new Texture(Gdx.files.internal("data/atak.png")));
 		
 		posiadaneZycie = new TextureRegion(new Texture(Gdx.files.internal("data/posiadane_zycie.png")));
 		straconeZycie = new TextureRegion(new Texture(Gdx.files.internal("data/stracone_zycie.png")));
