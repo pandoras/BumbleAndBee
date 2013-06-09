@@ -29,7 +29,7 @@ public class Przeciwnicy extends KolekcjaObiektow {
 	{
 		Random rand = new Random();
 		
-		int x = 100;
+		int x = (int)poczatkowyX;
 		int y;
 		AnimowanyObiekt obiekt;
 		while ( x<szerokoscLevelu*2.5)
@@ -48,7 +48,7 @@ public class Przeciwnicy extends KolekcjaObiektow {
 			y = rand.nextInt(wysokoscLevelu - 200) + 100;	
 			obiekt.setBounds(x, y, obiekt.obrazek.getRegionWidth(), obiekt.obrazek.getRegionHeight());
 			estrada.addActor(obiekt);
-			x+=200;
+			x+=odstepX;
 		}		
 		
 		akcje = new Pool<Action>() {

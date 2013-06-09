@@ -61,7 +61,7 @@ public class WarstwaTla extends Warstwa {
 		monety.stworz(100, 200, SkalowalnyEkran.BASE_WIDTH * mnoznikDlugosci, SkalowalnyEkran.BASE_HEIGHT, this);	
 		
 		przeciwnicy = new Przeciwnicy(bee);
-		przeciwnicy.stworz(500, 200, SkalowalnyEkran.BASE_WIDTH * mnoznikDlugosci, SkalowalnyEkran.BASE_HEIGHT, this);
+		przeciwnicy.stworz(800, 200, SkalowalnyEkran.BASE_WIDTH * mnoznikDlugosci, SkalowalnyEkran.BASE_HEIGHT, this);
 		
 		Image ul = new Image(PrzechowalniaAssets.ul);
 		//obrazki[ilosc].setTransform(true);
