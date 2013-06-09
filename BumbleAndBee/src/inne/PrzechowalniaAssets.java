@@ -47,6 +47,10 @@ public class PrzechowalniaAssets {
 		textureSklepZamknij = new TextureRegion(new Texture(Gdx.files.internal("sklep/zamknij.png")));
 		textureSklepKup = new TextureRegion(new Texture(Gdx.files.internal("sklep/kup.png")));
 		
+		textureSklep = new Texture(Gdx.files.internal("sklep/calosc.png"));
+		textureSklepZamknij = new TextureRegion(new Texture(Gdx.files.internal("sklep/zamknij.png")));
+		textureSklepKup = new TextureRegion(new Texture(Gdx.files.internal("sklep/kup.png")));
+		
 		// wazne: kolejnosc jak w stalych przyciskow
 		teksturyPrzyciskow = new ArrayList<Texture>(3);
 		teksturyPrzyciskow.add(new Texture(Gdx.files.internal("menu/start_gry.png")));
