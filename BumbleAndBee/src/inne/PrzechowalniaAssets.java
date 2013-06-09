@@ -25,6 +25,7 @@ public class PrzechowalniaAssets {
 	
 	public static TextureRegion ul;
 	public static TextureRegion zadlo;
+	public static TextureRegion miod;
 	
 	// indeksy przyciskow
 	public static final int przyciskStart = 0;
@@ -69,6 +70,8 @@ public class PrzechowalniaAssets {
 		ul = new TextureRegion(new Texture(Gdx.files.internal("data/ul.png")));		
 		
 		zadlo = new TextureRegion(new Texture(Gdx.files.internal("data/zadlo.png")));	
+		
+		miod = new TextureRegion(new Texture(Gdx.files.internal("data/miod.png")));		
 	
 	}
 }
