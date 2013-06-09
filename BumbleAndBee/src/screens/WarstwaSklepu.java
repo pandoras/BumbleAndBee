@@ -40,8 +40,6 @@ public class WarstwaSklepu extends Warstwa {
 	
 	final int[] kosztySklep = new int[] {9999, 9999, 9999, 9999, 30, 50, 9999, 9999, 9999, 9999 };
 	
-	int miodek = 100;
-	
 	public WarstwaSklepu(BumbleAndBee maingame)
 	{
 		super(SkalowalnyEkran.BASE_WIDTH,  SkalowalnyEkran.BASE_HEIGHT, maingame);
@@ -72,7 +70,7 @@ public class WarstwaSklepu extends Warstwa {
 		miodImage.setY(MIOD_Y);
 		this.addActor(miodImage);
 		
-		liczbaMiodu = new Label(miodek + "", skin1);
+		liczbaMiodu = new Label(pobierzIloscMiodu()+"", skin1);
 		liczbaMiodu.setX(MIOD_X + 40);
 		liczbaMiodu.setY(MIOD_Y - 5);
 		this.addActor(liczbaMiodu);
@@ -101,8 +99,12 @@ public class WarstwaSklepu extends Warstwa {
 		// Przedmiot 4
 		kupButtons.get(4).addListener(new InputListener() {
 			public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+				int miodek = pobierzIloscMiodu();
 				if(kosztySklep[4] <= miodek)
+				{
 					miodek -= kosztySklep[4];
+					ustawIloscMiodu(miodek);
+				}
 				
 				liczbaMiodu.setText(miodek + "");
 				
@@ -115,8 +117,12 @@ public class WarstwaSklepu extends Warstwa {
 		// Przedmiot 5
 		kupButtons.get(5).addListener(new InputListener() {
 			public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+				int miodek = pobierzIloscMiodu();
 				if(kosztySklep[5] <= miodek)
+				{
 					miodek -= kosztySklep[5];
+					ustawIloscMiodu(miodek);
+				}
 				
 				liczbaMiodu.setText(miodek + "");
 				
@@ -128,8 +134,24 @@ public class WarstwaSklepu extends Warstwa {
 	}
 	
 	@Override
+	public void act(float delta)
+	{
+		liczbaMiodu.setText(pobierzIloscMiodu()+"");
+	}
+	
+	@Override
 	public TypWarstwy pobierzTyp()
 	{
 		return TypWarstwy.sklep;
+	}	
+	
+	private int pobierzIloscMiodu()
+	{
+		return gra.ileMiodu;
+	}	
+	
+	private void ustawIloscMiodu(int ilosc)
+	{
+		gra.ileMiodu = ilosc;
 	}	
 }

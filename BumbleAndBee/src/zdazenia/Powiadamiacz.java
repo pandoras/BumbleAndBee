@@ -1,5 +1,7 @@
 package zdazenia;
 
+import screens.WarstwaStatystyk;
+
 import com.badlogic.gdx.utils.Array;
 
 // ta klasa jednoszesnie slucha jak i przekazuje dalej do innych listenerow
@@ -21,6 +23,11 @@ public class Powiadamiacz  {
 		for (RejestratorPunktacji listener : sluchaczePunktacji) {
 			listener.naZmianePunktacji(rodzaj);
 		}
+	}
+
+	public void usunSluchaczaPunktacji(WarstwaStatystyk statystyki) {
+		sluchaczePunktacji.removeValue(statystyki, true);
+		
 	}
 
 }

@@ -4,7 +4,6 @@ import screens.SkalowalnyEkran;
 import inne.PrzechowalniaAssets;
 import modele.Pszczola;
 
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;

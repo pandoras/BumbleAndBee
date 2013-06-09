@@ -70,7 +70,7 @@ public class MainMenu extends SkalowalnyEkran {
 						public void clicked(InputEvent event, float x, float y)
 						{
 							event.stop();
-							game.zacznijLevel();
+							game.zacznijGre();
 						}});					
 					break;
 				case PrzechowalniaAssets.przyciskWyjscie:

@@ -43,9 +43,6 @@ public class WarstwaStatystyk extends Warstwa implements RejestratorPunktacji {
 	
 	InterfejsHP interfejsHP;
 	long czas = System.nanoTime();
-	
-	public int ileMonet = 0;
-	public int ileMiodu = 0;	
 
 	Label labelIleMonet, labelIleMiodu, labelCzas;
 	Zycia posiadaneZycia;
@@ -165,13 +162,13 @@ public class WarstwaStatystyk extends Warstwa implements RejestratorPunktacji {
 		
 		if (rodzaj == Punktuj.miod)
 		{
-			ileMiodu++;
-			labelIleMiodu.setText(": "+ ileMiodu);			
+			gra.ileMiodu++;
+			labelIleMiodu.setText(": "+ gra.ileMiodu);			
 		}
 		if (rodzaj == Punktuj.monety)
 		{
-			ileMonet++;
-			labelIleMonet.setText(": "+ ileMonet);
+			gra.ileMonet++;
+			labelIleMonet.setText(": "+ gra.ileMonet);
 		}
 		if (rodzaj == Punktuj.zycie)
 		{

@@ -5,7 +5,6 @@ import zdazenia.Dyrektor;
 
 import com.badlogic.gdx.Gdx;
 import com.majapiotr.bumbleandbee.BumbleAndBee;
-import com.majapiotr.bumbleandbee.IPrzycisk;
 
 
 public class Level extends SkalowalnyEkran  {	
@@ -178,12 +177,7 @@ public class Level extends SkalowalnyEkran  {
 
 	@Override
 	public void dispose () {
-		//world.dispose();
-	}
-
-	public void zacznijNowy() {
-		// TODO Auto-generated method stub
-		
+		gra.powiadamiacz.usunSluchaczaPunktacji(this.statystyki);	
 	}
 
 }

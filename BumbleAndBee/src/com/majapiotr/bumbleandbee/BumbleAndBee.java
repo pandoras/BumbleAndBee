@@ -8,13 +8,15 @@ import zdazenia.Dyrektor;
 import zdazenia.Powiadamiacz;
 
 import com.badlogic.gdx.Game;
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
 public class BumbleAndBee extends Game {
 	
 	public IPrzycisk przyciskStrzalu;
 	public Powiadamiacz powiadamiacz;
+	
+	public int ileMonet = 0;
+	public int ileMiodu = 0;	
 	
 	public BumbleAndBee(IPrzycisk przycisk)
 	{
@@ -26,7 +28,7 @@ public class BumbleAndBee extends Game {
 	
 	@Override
 	public void create() {		
-		this.setScreen(new SplashScreen(this));
+		this.setScreen(new SplashScreen(this, false));
 		
 		PrzechowalniaAssets.load();
 		Tester.init();
@@ -58,13 +60,17 @@ public class BumbleAndBee extends Game {
 		super.resume();
 	}
 	
+	public void zacznijGre()
+	{
+		ileMonet = 0;
+		ileMiodu = 0;		
+		setScreen(new Level(this));
+	}
+	
+	
 	public void zacznijLevel()
 	{
-		Screen s = getScreen();
-		if (s instanceof Level)
-			((Level)s).zacznijNowy();
-		else
-			setScreen(new Level(this));
+		setScreen(new Level(this));
 	}
 	
 	public void pokazMenu()

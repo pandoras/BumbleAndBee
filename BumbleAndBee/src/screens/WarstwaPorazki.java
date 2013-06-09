@@ -1,14 +1,11 @@
 package screens;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
-import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener.ChangeEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.majapiotr.bumbleandbee.BumbleAndBee;
 
@@ -46,8 +43,10 @@ public class WarstwaPorazki extends Warstwa {
 			public void clicked (InputEvent event, float x, float y) 
 			{
 				event.stop();
-				gra.zacznijLevel();
-				((Level)gra.getScreen()).dyrektor.ustawAktywnaWarstwe(TypWarstwy.statystyki);
+				gra.getScreen().dispose();
+				gra.setScreen(new SplashScreen(gra, true));
+				//gra.zacznijGre();
+				//((Level)gra.getScreen()).dyrektor.ustawAktywnaWarstwe(TypWarstwy.statystyki);
 			}
 		});
 	}
