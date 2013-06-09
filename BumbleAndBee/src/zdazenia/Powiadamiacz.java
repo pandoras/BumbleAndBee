@@ -17,6 +17,7 @@ public class Powiadamiacz  {
 
 	public void dodajSluchaczaPunktacji (RejestratorPunktacji listener) {
 		sluchaczePunktacji.add(listener);
+
 	}
 
 	public void powiadom (Punktuj rodzaj) {
@@ -27,7 +28,7 @@ public class Powiadamiacz  {
 
 	public void usunSluchaczaPunktacji(WarstwaStatystyk statystyki) {
 		sluchaczePunktacji.removeValue(statystyki, true);
-		
+
 	}
 
 }

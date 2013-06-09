@@ -51,6 +51,7 @@ public class WarstwaPauzy extends Warstwa {
 		
 		buttonMain.addListener(new ChangeListener() {
 			public void changed (ChangeEvent event, Actor actor) {
+				((Level)gra.getScreen()).dispose();
 				gra.setScreen(new MainMenu(gra));
 			}
 		});	
