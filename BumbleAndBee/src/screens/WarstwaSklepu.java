@@ -2,6 +2,8 @@ package screens;
 
 import java.util.ArrayList;
 
+import zdazenia.Punktuj;
+
 import inne.PrzechowalniaAssets;
 
 import com.badlogic.gdx.Gdx;
@@ -34,6 +36,11 @@ public class WarstwaSklepu extends Warstwa {
 	private static final int KUP_Y = 400;
 	
 	ArrayList<Image> kupButtons = new ArrayList<Image>();
+	Label liczbaMiodu;
+	
+	final int[] kosztySklep = new int[] {9999, 9999, 9999, 9999, 30, 50, 9999, 9999, 9999, 9999 };
+	
+	int miodek = 100;
 	
 	public WarstwaSklepu(BumbleAndBee maingame)
 	{
@@ -65,7 +72,7 @@ public class WarstwaSklepu extends Warstwa {
 		miodImage.setY(MIOD_Y);
 		this.addActor(miodImage);
 		
-		Label liczbaMiodu = new Label("100", skin1);
+		liczbaMiodu = new Label(miodek + "", skin1);
 		liczbaMiodu.setX(MIOD_X + 40);
 		liczbaMiodu.setY(MIOD_Y - 5);
 		this.addActor(liczbaMiodu);
@@ -83,19 +90,41 @@ public class WarstwaSklepu extends Warstwa {
 		);
 		
 		// przyciski kup
-		for(int i = 0; i < 8; i++) {
+		for(int nrPrzedmiotu = 0; nrPrzedmiotu < 8; nrPrzedmiotu++) {
 			Image kupImage = new Image(new TextureRegion(PrzechowalniaAssets.textureSklepKup));
 			kupButtons.add(kupImage);
-			kupButtons.get(i).setPosition(275 + (i % 4) * 193, 140 + 200 * (i / 4));
-			this.addActor(kupButtons.get(i));
-			
-			kupButtons.get(i).addListener(new InputListener() {
-			      public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-			    	 ((Level)gra.getScreen()).dyrektor.ustawAktywnaWarstwe(TypWarstwy.statystyki);
-			         return false;
-			      }}
-			);
+			kupButtons.get(nrPrzedmiotu).setPosition(275 + (nrPrzedmiotu % 4) * 193, 140 + 200 * (nrPrzedmiotu / 4));
+			this.addActor(kupButtons.get(nrPrzedmiotu));
+		
 		}
+		
+		// Przedmiot 4
+		kupButtons.get(4).addListener(new InputListener() {
+			public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+				if(kosztySklep[4] <= miodek)
+					miodek -= kosztySklep[4];
+				
+				liczbaMiodu.setText(miodek + "");
+				
+				System.out.print(4);
+		    	 
+				return false;
+			}
+		});
+		
+		// Przedmiot 5
+		kupButtons.get(5).addListener(new InputListener() {
+			public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+				if(kosztySklep[5] <= miodek)
+					miodek -= kosztySklep[5];
+				
+				liczbaMiodu.setText(miodek + "");
+				
+				System.out.print(5);
+		    	 
+				return false;
+			}
+		});
 	}
 	
 	@Override
