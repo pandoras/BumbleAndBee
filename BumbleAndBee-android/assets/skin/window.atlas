@@ -1,0 +1,13 @@
+
+window.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+okno-tlo
+  rotate: false
+  xy: 0, 0
+  size: 114, 106
+  split: 45, 47, 52, 39
+  orig: 104, 48
+  offset: 0, 0
+  index: -1

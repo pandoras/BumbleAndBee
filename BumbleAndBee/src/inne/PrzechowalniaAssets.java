@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
@@ -19,17 +18,13 @@ public class PrzechowalniaAssets {
 	public static BitmapFont fontSegoeUI18;
 	public static BitmapFont fontSegoeUI72;
 	public static BitmapFont fontSegoeUI_Light32;
-	
-	public static Sprite spritePrzeciwnik;
-	public static Sprite spritePszczola;
-	public static Sprite spriteMoneta;
-	public static Sprite spriteMiod;
-	public static Sprite spriteZadlo;
+
 	
 	public static TextureRegion posiadaneZycie;
 	public static TextureRegion straconeZycie;
 	
 	public static TextureRegion ul;
+	public static TextureRegion zadlo;
 	
 	// indeksy przyciskow
 	public static final int przyciskStart = 0;
@@ -38,12 +33,19 @@ public class PrzechowalniaAssets {
 	// tabela tekstur przyciskow
 	public static  ArrayList<Texture> teksturyPrzyciskow;
 	public static Texture textureMenu;
+	public static Texture textureSklep;
+	public static TextureRegion textureSklepZamknij;
+	public static TextureRegion textureSklepKup;
 	
 	public static void load() {
 		
 		spriteBatch = new SpriteBatch();
 		
 		textureMenu = new Texture(Gdx.files.internal("menu/MainMenu.jpg"));
+		
+		textureSklep = new Texture(Gdx.files.internal("sklep/calosc.png"));
+		textureSklepZamknij = new TextureRegion(new Texture(Gdx.files.internal("sklep/zamknij.png")));
+		textureSklepKup = new TextureRegion(new Texture(Gdx.files.internal("sklep/kup.png")));
 		
 		// wazne: kolejnosc jak w stalych przyciskow
 		teksturyPrzyciskow = new ArrayList<Texture>(3);
@@ -56,17 +58,14 @@ public class PrzechowalniaAssets {
 		fontSegoeUI18 = NarzedziaBitmapy.wczytajFont(18, "SegoeUI");
 		fontSegoeUI72 = NarzedziaBitmapy.wczytajFont(72, "SegoeUI");	
 		fontSegoeUI_Light32 = NarzedziaBitmapy.wczytajFont(32, "SegoeUI_Light");
-		
-		spritePszczola = NarzedziaBitmapy.wczytajBitmape("data/pszczola.png");
-		spriteMoneta = NarzedziaBitmapy.wczytajBitmape("data/moneta.png");
-		spriteMiod = NarzedziaBitmapy.wczytajBitmape("data/miod.png");
-		spritePrzeciwnik = NarzedziaBitmapy.wczytajBitmape("data/trzmiel.png");
-		spriteZadlo = NarzedziaBitmapy.wczytajBitmape("data/zadlo.png");
+
 		
 		posiadaneZycie = new TextureRegion(new Texture(Gdx.files.internal("data/posiadane_zycie.png")));
 		straconeZycie = new TextureRegion(new Texture(Gdx.files.internal("data/stracone_zycie.png")));
 		
 		ul = new TextureRegion(new Texture(Gdx.files.internal("data/ul.png")));		
+		
+		zadlo = new TextureRegion(new Texture(Gdx.files.internal("data/zadlo.png")));	
 	
 	}
 }

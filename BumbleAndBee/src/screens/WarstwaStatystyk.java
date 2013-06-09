@@ -1,17 +1,16 @@
 package screens;
 
-import nieuzywane.ISluchaczKlawiszy;
+
+import modele.InterfejsHP;
+import modele.PostepPoziomu;
 import modele.Pszczola;
 import modele.Zycia;
+import zdazenia.Dyrektor;
 import zdazenia.Punktuj;
 import zdazenia.RejestratorPunktacji;
-import inne.Dyrektor;
-import inne.InterfejsHP;
-import inne.PostepPoziomu;
 import inne.PrzechowalniaAssets;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -127,6 +126,7 @@ public class WarstwaStatystyk extends Warstwa implements RejestratorPunktacji {
 		// pszczole bedziemy rysowac na warstwie statystyk bo sie nie ma przesuwac z kamera
 		pszczola = new Pszczola(100, 100);
 		this.addActor(pszczola);		
+		this.addActor(pszczola.zadlo);
 		this.setKeyboardFocus(pszczola);		
 	}
 	

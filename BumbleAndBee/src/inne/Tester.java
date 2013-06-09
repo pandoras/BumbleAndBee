@@ -1,6 +1,6 @@
 package inne;
 
-import modele.IObiekt;
+import modele.AnimowanyObiekt;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
@@ -34,7 +34,7 @@ public class Tester {
 	
 	// do testowania obiektuw na ekranie
 	// uwaga! obiekt musi miec dobrze obilczone granice ekranowe czylo odswierzony ekranowy x
-	public static void narysujGraniceObiektu(IObiekt obiekt)
+	public static void narysujGraniceObiektu(AnimowanyObiekt obiekt)
 	{
 		debugBatch.begin();
 		debugBatch.draw(new PolygonRegion(debugRegion, obiekt.pobierzGraniceEkranowe()), 0, 0);

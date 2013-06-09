@@ -2,7 +2,6 @@ package modele;
 
 import screens.SkalowalnyEkran;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Intersector;
@@ -16,7 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 
 
-public class AnimowanyObiekt extends Group implements IObiekt {
+public class AnimowanyObiekt extends Group  {
 
 	protected TextureRegion obrazek;
 	Polygon granice = null;
@@ -66,7 +65,7 @@ public class AnimowanyObiekt extends Group implements IObiekt {
     	return  new Rectangle(this.getX(),this.getY(), this.getWidth(), this.getHeight() );
     }
     
-    public boolean hit(IObiekt bee)
+    public boolean hit(AnimowanyObiekt bee)
     {
     	float[] wierzcholki = pobierzGranice();
     	float[] wierzcholkiPszczoly = bee.pobierzGranice();
@@ -77,7 +76,6 @@ public class AnimowanyObiekt extends Group implements IObiekt {
     }
 
     // pobierz wierzcholki w koordynatach levelu
-	@Override
 	public float[] pobierzGranice() {
 		if (granice==null)
 			return null;
@@ -87,7 +85,6 @@ public class AnimowanyObiekt extends Group implements IObiekt {
 	}
 	
 	// do rysowania dla testow
-	@Override
 	public float[] pobierzGraniceEkranowe() {
 		if (granice==null)
 			return null;		
@@ -135,6 +132,11 @@ public class AnimowanyObiekt extends Group implements IObiekt {
 		sekwencja.addAction(actionFinal);		
 		
 		this.addAction(sekwencja);
+	}
+	
+	// to metoda uzywana tylko przy zolnierzach (nadpisywana tam)
+	public void animuj(boolean zmniejszZycie)
+	{
 	}
     
 }

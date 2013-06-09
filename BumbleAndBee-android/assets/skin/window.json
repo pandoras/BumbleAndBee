@@ -1,0 +1,9 @@
+{
+com.badlogic.gdx.graphics.g2d.BitmapFont: { default-font: { file: default.fnt } },
+com.badlogic.gdx.graphics.Color: {
+	brazowy: { a: 1, b: 106, g: 79, r: 13 }
+},
+com.badlogic.gdx.scenes.scene2d.ui.Window$WindowStyle: {
+	default: { titleFont: default-font, background: okno-tlo, titleFontColor: brazowy }
+}
+}

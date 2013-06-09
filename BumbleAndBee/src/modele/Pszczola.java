@@ -4,17 +4,11 @@ import java.util.HashSet;
 
 import screens.SkalowalnyEkran;
 
-import nieuzywane.ISluchaczKlawiszy;
-
-
-import inne.PrzechowalniaAssets;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
@@ -25,7 +19,7 @@ import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputEvent.Type;
 
-public class Pszczola extends AnimowanyObiekt implements IObiekt, EventListener  {
+public class Pszczola extends AnimowanyObiekt implements EventListener  {
 
 	// pozycja do rysowania na ekranie
 	float ekranowyx = 100;
@@ -36,13 +30,14 @@ public class Pszczola extends AnimowanyObiekt implements IObiekt, EventListener 
 	static final int MAX_X = SkalowalnyEkran.BASE_WIDTH-100;
 	
 	private int pixeliNaSekunde = 100;
-	Zadlo zadlo;
+	public Zadlo zadlo;
 	public Body cialo = null;
 	Polygon granice;
 	
 	// jezeli ten wektor jest niezerowy to znaczy ze trzeba sie przemiescic
 	Vector2 trwaPrzemieszczenie; 
 	
+	@SuppressWarnings("serial")
 	public final HashSet<Integer> klawisze = new HashSet<Integer>() {{ 
 		add(Keys.DPAD_LEFT);
 		add(Keys.DPAD_RIGHT);
@@ -56,7 +51,8 @@ public class Pszczola extends AnimowanyObiekt implements IObiekt, EventListener 
 		
 		this.setBounds(startx, starty, obrazek.getRegionWidth(), obrazek.getRegionHeight());
 		
-		zadlo = new Zadlo();
+		zadlo = new Zadlo(this);
+		
 		// granice pszczoly
 		float[]vertice={ 27.27516100f, 0.16148262f,
 				 10.89715900f, 10.07748262f,
@@ -109,12 +105,12 @@ public class Pszczola extends AnimowanyObiekt implements IObiekt, EventListener 
 		}
 		
 		if (Gdx.input.isKeyPressed(Keys.SPACE) && zadlo.pozaEkranem()){
-			zadlo.wysun(this);
+			zadlo.wysun();
 		}	
 		else if (!zadlo.pozaEkranem()){
-			zadlo.przesun();
+			zadlo.przesun(poczatekEkranu, deltaTime);
 			if ( zadlo.pozaEkranem()){
-				zadlo.ekranowyx = -1;
+				zadlo.schowaj();
 			}
 		}		
 	}
@@ -122,7 +118,7 @@ public class Pszczola extends AnimowanyObiekt implements IObiekt, EventListener 
 	@Override
 	public Rectangle pobierzProstok¹t()
 	{
-		return new Rectangle(this.getX(),this.getY(), PrzechowalniaAssets.spritePszczola.getWidth(), PrzechowalniaAssets.spritePszczola.getHeight());
+		return new Rectangle(this.getX(),this.getY(), obrazek.getRegionWidth(), obrazek.getRegionHeight());
 	}
 	
 	@Override
@@ -136,7 +132,7 @@ public class Pszczola extends AnimowanyObiekt implements IObiekt, EventListener 
 	public float[] pobierzGranice()
 	{
 		granice.setPosition(this.getX(), this.getY());
-		granice.setScale(PrzechowalniaAssets.spritePszczola.getScaleX(), PrzechowalniaAssets.spritePszczola.getScaleY());
+		//granice.setScale(this.obrazek.getScaleX(), PrzechowalniaAssets.spritePszczola.getScaleY());
 		return granice.getTransformedVertices();
 	}
 
@@ -145,10 +141,6 @@ public class Pszczola extends AnimowanyObiekt implements IObiekt, EventListener 
 		batch.setColor(getColor());
 		batch.draw(obrazek, ekranowyx, getY(), getOriginX(), getOriginY(), getWidth(), getHeight(), getScaleX(), getScaleY(),
 			getRotation());
-
-		if (!zadlo.pozaEkranem()){
-			zadlo.draw(batch);
-		}
 	}
 
 	@Override
@@ -158,7 +150,6 @@ public class Pszczola extends AnimowanyObiekt implements IObiekt, EventListener 
 			return false;
 		
 		InputEvent inputEvent = (InputEvent)event;
-		Type eventType = inputEvent.getType();
 		obsluzKlawisz( inputEvent.getType(), inputEvent.getKeyCode());
 		return false;
 	}

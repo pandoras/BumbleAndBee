@@ -1,4 +1,4 @@
-package inne;
+package zdazenia;
 
 import screens.Level;
 import screens.TypWarstwy;
@@ -8,8 +8,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Input.Keys;
-import com.badlogic.gdx.scenes.scene2d.InputEvent.Type;
-import com.badlogic.gdx.scenes.scene2d.InputListener;
 
 public class Dyrektor implements InputProcessor  {
 
@@ -19,7 +17,6 @@ public class Dyrektor implements InputProcessor  {
 	public Dyrektor(Level obecnyPoziom)
 	{
 		poziom = obecnyPoziom;
-		//this.addKeyListener(this);
 	}
 	
 	public void ustawAktywnaWarstwe(Warstwa warstwa)
@@ -53,7 +50,7 @@ public class Dyrektor implements InputProcessor  {
 	
 	@Override
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-		// TODO Auto-generated method stub
+
 		if (aktywnaWarstwa == TypWarstwy.pauza)
 		{
 			if (poziom.warstwaPauzy.buttonMain.hit(screenX, screenY, true)!=null)
@@ -65,7 +62,7 @@ public class Dyrektor implements InputProcessor  {
 
 	@Override
 	public boolean keyDown(int keycode) {
-		// TODO Auto-generated method stub
+
 		if (aktywnaWarstwa == TypWarstwy.tlo || aktywnaWarstwa == TypWarstwy.statystyki)
 		{
 			if (keycode == Keys.ESCAPE)

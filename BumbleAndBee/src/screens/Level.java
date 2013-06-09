@@ -1,13 +1,9 @@
 package screens;
 
 
-import inne.Dyrektor;
-import modele.Pszczola;
+import zdazenia.Dyrektor;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.math.Matrix4;
-import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.majapiotr.bumbleandbee.BumbleAndBee;
 import com.majapiotr.bumbleandbee.IPrzycisk;
 

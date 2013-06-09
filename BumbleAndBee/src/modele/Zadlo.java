@@ -1,45 +1,60 @@
 package modele;
 
 import screens.SkalowalnyEkran;
-
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.Texture.TextureFilter;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-
-import inne.NarzedziaBitmapy;
 import inne.PrzechowalniaAssets;
 
-public class Zadlo {
-	public int ekranowyx = -1;
-	public int y = -1;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Rectangle;
+
+public class Zadlo extends AnimowanyObiekt {
 	
-	public Zadlo() {
-		ekranowyx = -1;
-		y = -1;
+	public float przesunieciex = -1;
+	Pszczola pszczola;
+	
+	public Zadlo(Pszczola pszczolaWlascicielka) {
+		super(PrzechowalniaAssets.zadlo);
+		// na razie zadlo niewidoczne
+		pszczola = pszczolaWlascicielka;
+		this.schowaj();
 	}
 	
-	public void przesun()
+	public void przesun(float poczatekEkranu, float deltaTime)
 	{
-		ekranowyx += 5;
+		przesunieciex += 5f;
+		this.setX(pszczola.getX()+przesunieciex);
 	}
 	
 	public boolean pozaEkranem()
 	{
-		if(ekranowyx<0 || ekranowyx>SkalowalnyEkran.BASE_WIDTH)
+		if(przesunieciex<0 || (pszczola.ekranowyx + przesunieciex)>SkalowalnyEkran.BASE_WIDTH)
 			return true;
 		return false;
 	}
 	
-	public void draw(SpriteBatch batch)
-	{	
-		PrzechowalniaAssets.spriteZadlo.setPosition(this.ekranowyx, y);
-		PrzechowalniaAssets.spriteZadlo.draw(batch);
+	@Override
+	public void draw (SpriteBatch batch, float parentAlpha) {
+		batch.setColor(getColor());
+		batch.draw(obrazek, pszczola.ekranowyx + przesunieciex, getY(), getOriginX(), getOriginY(), getWidth(), getHeight(), getScaleX(), getScaleY(),
+			getRotation());
 	}
 	
-	public void wysun(Pszczola pszczola)
+	@Override
+	public Rectangle pobierzProstok¹t()
 	{
-		ekranowyx = (int)pszczola.ekranowyx+80;
-		y = (int)pszczola.getY()+20;	
+		return new Rectangle(this.getX(),this.getY(), PrzechowalniaAssets.zadlo.getRegionWidth(), PrzechowalniaAssets.zadlo.getRegionHeight());
 	}
+	
+	public void wysun()
+	{
+		przesunieciex = 80f;
+		//this.setBounds((int)pszczola.ekranowyx+80,(int)pszczola.getY()+20,obrazek.getRegionWidth(),obrazek.getRegionHeight());	
+		this.setBounds((int)pszczola.getX()+przesunieciex,(int)pszczola.getY()+20,obrazek.getRegionWidth(),obrazek.getRegionHeight());	
+	}
+	
+	public void schowaj()
+	{
+		przesunieciex = -1;
+		this.setBounds(0,0,0,0);
+	}
+
 }

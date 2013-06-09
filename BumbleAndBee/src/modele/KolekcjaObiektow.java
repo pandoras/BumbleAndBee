@@ -5,14 +5,12 @@ import java.util.Random;
 
 import screens.Warstwa;
 
-import zdazenia.Powiadamiacz;
 import zdazenia.Punktuj;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Action;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Pool;
 
 @SuppressWarnings("serial")
@@ -24,8 +22,8 @@ public class KolekcjaObiektow extends ArrayList<AnimowanyObiekt> {
 	int finalDoYtop = 0;	
 	Punktuj coPunktowac;
 	Pool<Action> akcje;
-	
-	public KolekcjaObiektow(float[] wierzcholkiKonturu, String sciezkaDoObrazka, int animujDoX, int animujDoYtop, Punktuj co )
+
+	public KolekcjaObiektow(float[] wierzcholkiKonturu, String sciezkaDoObrazka, int animujDoX, int animujDoYtop, Punktuj co)
 	{
 		// wywo³anie konstruktora klasy bazowej
 		super(); 	

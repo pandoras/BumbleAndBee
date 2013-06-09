@@ -1,6 +1,5 @@
 package modele;
 
-import java.util.ArrayList;
 import java.util.Random;
 
 import przeciwnicy.Grubas;
@@ -9,14 +8,12 @@ import przeciwnicy.Zolnierz;
 
 import screens.Warstwa;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.utils.Pool;
 
 import zdazenia.Punktuj;
 
+@SuppressWarnings("serial")
 public class Przeciwnicy extends KolekcjaObiektow {
 
 	Pszczola pszczola;
@@ -67,4 +64,22 @@ public class Przeciwnicy extends KolekcjaObiektow {
 		};
 	
 	}	
+	
+	@Override
+	public int sprawdzKolizje(Pszczola pszczola)
+	{
+		int licznik = super.sprawdzKolizje(pszczola);
+		for (int i = this.size()-1; i>=0; i--)
+		{				
+			if (!pszczola.zadlo.pozaEkranem())
+				if (this.get(i).hit(pszczola.zadlo))
+				{
+					this.get(i).animuj( false );
+					this.remove(i);
+					pszczola.zadlo.schowaj();
+				}
+		}
+		return licznik;
+	}
+	
 }

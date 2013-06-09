@@ -7,20 +7,21 @@ import com.majapiotr.bumbleandbee.BumbleAndBee;
 
 public class WarstwaPodsumowania extends Warstwa {
 
-	protected static final int BASE_WIDTH = 600;
-	protected static final int BASE_HEIGHT = 600;
-	
+	static final int WIDTH = 400;
+	static final int HEIGHT = 300;
+
 	public WarstwaPodsumowania(BumbleAndBee maingame)
 	{
-		super(BASE_WIDTH,  BASE_HEIGHT, maingame);
+		super(SkalowalnyEkran.BASE_WIDTH,  SkalowalnyEkran.BASE_HEIGHT, maingame);
 		
-		Skin skin = new Skin(Gdx.files.internal("skin/uiskin.json"));
-		Window window = new Window("Dolecia³eœ do ula!", skin);
+		Skin skin = new Skin(Gdx.files.internal("skin/window.json"));
+		Window window = new Window("DOLECIALES / ZGINALES", skin);
 		window.defaults().spaceBottom(10);
 		window.row().fill().expandX();
 		
-		window.setX((SkalowalnyEkran.BASE_WIDTH-window.getWidth())/2);
-		window.setY((SkalowalnyEkran.BASE_HEIGHT-window.getHeight())/2);		
+		window.setBounds((SkalowalnyEkran.BASE_WIDTH-WIDTH)/2,
+		                 (SkalowalnyEkran.BASE_HEIGHT-HEIGHT)/2,
+		                 WIDTH, HEIGHT);		
 		addActor(window);	
 	}
 	
