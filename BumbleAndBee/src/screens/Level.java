@@ -12,8 +12,6 @@ public class Level extends SkalowalnyEkran  {
 	
 	protected static final int WIDTH_MULTIPLIER = 3;
 	protected static final int LEVEL_WIDTH = BASE_WIDTH*WIDTH_MULTIPLIER;
-	
-	IPrzycisk przyciskStrzalu;
 
 	// mamy na razie 2 warstwy, menu na pauze albo koniec levelu bedzie 3-cia warstwa
 	public WarstwaTla przesuwaneT³o;
@@ -29,11 +27,10 @@ public class Level extends SkalowalnyEkran  {
 	
 	public Dyrektor dyrektor; 
 	
-	public Level (BumbleAndBee gra,IPrzycisk przycisk)
+	public Level (BumbleAndBee gra)
 	{
 		super(gra);
-		przyciskStrzalu = przycisk;
-		
+
 		// wszelki input idzie do dyrektora
 		dyrektor = new Dyrektor(this);
 		

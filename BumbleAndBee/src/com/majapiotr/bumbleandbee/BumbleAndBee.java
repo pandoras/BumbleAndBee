@@ -4,6 +4,7 @@ import modele.Pszczola;
 import inne.PrzechowalniaAssets;
 import inne.Tester;
 import screens.*;
+import zdazenia.Dyrektor;
 import zdazenia.Powiadamiacz;
 
 import com.badlogic.gdx.Game;
@@ -58,7 +59,7 @@ public class BumbleAndBee extends Game {
 	
 	public void zacznijLevel()
 	{
-		setScreen(new Level(this, przyciskStrzalu));
+		setScreen(new Level(this));
 	}
 	
 	public void pokazMenu()
@@ -66,10 +67,13 @@ public class BumbleAndBee extends Game {
 		setScreen(new MainMenu(this));
 	}
 	
-	public void dodajAktoraStrzalu(Warstwa warstwa, Pszczola pszczola)
+	public void dodajAktoraStrzalu(Warstwa warstwa, Pszczola pszczola, Dyrektor dyrektor)
 	{
 		Actor przycisk = przyciskStrzalu.stworzAktoraStrzalu(pszczola);
 		if (przycisk!=null)
+		{
 			warstwa.addActor(przycisk);
+			dyrektor.ustawAktoraStrzalu(przycisk);
+		}
 	}
 }

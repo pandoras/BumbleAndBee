@@ -18,6 +18,7 @@ import com.badlogic.gdx.scenes.scene2d.Event;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputEvent.Type;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
 
 public class Pszczola extends AnimowanyObiekt implements EventListener  {
 
@@ -50,7 +51,8 @@ public class Pszczola extends AnimowanyObiekt implements EventListener  {
 		super (new TextureRegion(new Texture(Gdx.files.internal("data/pszczola.png"))));
 		
 		this.setBounds(startx, starty, obrazek.getRegionWidth(), obrazek.getRegionHeight());
-		
+		// AnimowanyObiekt ma domyslnie Touchable wylaczone
+		this.setTouchable(Touchable.enabled);
 		zadlo = new Zadlo(this);
 		
 		// granice pszczoly
@@ -146,11 +148,19 @@ public class Pszczola extends AnimowanyObiekt implements EventListener  {
 	@Override
 	public boolean handle(Event event) {
 		
-		if (!(event instanceof InputEvent)) 
+		if (event instanceof InputEvent) 
+		{
+			InputEvent inputEvent = (InputEvent)event;
+			Type typZdarzenia = inputEvent.getType();
+			if (typZdarzenia==Type.touchDown || typZdarzenia==Type.touchDragged)
+			{
+				trwaPrzemieszczenie.x = 1;
+				//System.out.println("Tounch "+inputEvent.getStageX()+" "+inputEvent.getStageY());
+			}
+			else
+				obsluzKlawisz( inputEvent.getType(), inputEvent.getKeyCode());
 			return false;
-		
-		InputEvent inputEvent = (InputEvent)event;
-		obsluzKlawisz( inputEvent.getType(), inputEvent.getKeyCode());
+		}
 		return false;
 	}
 	
@@ -199,6 +209,30 @@ public class Pszczola extends AnimowanyObiekt implements EventListener  {
 			}			
 		}
 	}
+	
+	public void przemiescWStrone(float x, float y)
+	{
+		if (x>ekranowyx)
+			trwaPrzemieszczenie.x = 1;
+		else if (x<ekranowyx)
+			trwaPrzemieszczenie.x = -1;
+		if (y>getY())
+			trwaPrzemieszczenie.y = 1;
+		else if (y<getY())
+			trwaPrzemieszczenie.y = -1;		
+	}
 
+	public void zatrzymajPrzemieszczenie()
+	{
+		trwaPrzemieszczenie.x = 0;
+		trwaPrzemieszczenie.y = 0;
+	}
+	
+	public boolean trwaPrzemieszczenie()
+	{
+		if (trwaPrzemieszczenie.x != 0 || trwaPrzemieszczenie.y != 0)
+			return true;
+		return false;
+	}
 
 }

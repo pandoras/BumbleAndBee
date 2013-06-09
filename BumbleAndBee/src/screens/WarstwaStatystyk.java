@@ -128,9 +128,9 @@ public class WarstwaStatystyk extends Warstwa implements RejestratorPunktacji {
 		this.addActor(pszczola);		
 		this.addActor(pszczola.zadlo);
 		
-		gra.dodajAktoraStrzalu(this,pszczola);
+		gra.dodajAktoraStrzalu(this,pszczola,dyrektor);
 		
-		this.setKeyboardFocus(pszczola);		
+		this.setKeyboardFocus(pszczola);	
 	}
 	
 	public void act(float delta, float pozycjaKameryProc)

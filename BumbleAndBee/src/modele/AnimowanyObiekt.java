@@ -10,6 +10,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Group;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.actions.AlphaAction;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
@@ -37,6 +38,7 @@ public class AnimowanyObiekt extends Group  {
 	{
 		// wywo³anie konstruktora klasy bazowej
 		super(); 
+		this.setTouchable(Touchable.disabled);
 		obrazek = coMalowac;
 		if (wierzcholki!=null)
 			granice = new Polygon(wierzcholki);
