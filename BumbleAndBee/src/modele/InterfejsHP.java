@@ -20,7 +20,7 @@ public class InterfejsHP extends Group {
 	public static final int SZEROKOSC = 320;	
 	public static final int WYSOKOSC = 30;	
 	
-	public float procentZdrowia = 0.8f;
+	public float procentZdrowia = 1f;
 	Label labelIle;
 	
 	public InterfejsHP() {
