@@ -69,7 +69,7 @@ public class WarstwaStatystyk extends Warstwa implements RejestratorPunktacji {
 		
 		//---------------------------WYŒWIETLENIE INFORMACJI O LVL -------------------------------------
 		// bez podania nazwy stylu uzyje stylu 'default'
-		Label nazwaPoziomu = new Label("Poziom: 1",skin);
+		Label nazwaPoziomu = new Label("Poziom: "+gra.nrPoziomu,skin);
 		nazwaPoziomu.setX(SkalowalnyEkran.BASE_WIDTH-nazwaPoziomu.getWidth()-20);
 		nazwaPoziomu.setY(SkalowalnyEkran.BASE_HEIGHT-nazwaPoziomu.getHeight());
 		addActor(nazwaPoziomu);			
@@ -82,12 +82,12 @@ public class WarstwaStatystyk extends Warstwa implements RejestratorPunktacji {
 		//---------------------------koniec WYŒWIETLENIE INFORMACJI O LVL -------------------------------------		
 		
 		//--------------------------- WYŒWIETLENIE ZMIENNYCH -------------------------------------
-		labelIleMonet = new Label(": 0",skin,"mniejszy");
+		labelIleMonet = new Label(": "+gra.ileMonet,skin,"mniejszy");
 		labelIleMonet.setX(ILE_MONET_X);
 		labelIleMonet.setY(SkalowalnyEkran.BASE_HEIGHT-ILE_Y_TOP);		
 		addActor(labelIleMonet);
 
-		labelIleMiodu = new Label(": 0",skin,"mniejszy");
+		labelIleMiodu = new Label(": "+gra.ileMiodu,skin,"mniejszy");
 		labelIleMiodu.setX(ILE_MIODU_X);
 		labelIleMiodu.setY(SkalowalnyEkran.BASE_HEIGHT-ILE_Y_TOP);		
 		addActor(labelIleMiodu);		

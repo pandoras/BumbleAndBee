@@ -65,7 +65,8 @@ public class WarstwaTla extends Warstwa {
 		
 		Image ul = new Image(PrzechowalniaAssets.ul);
 		//obrazki[ilosc].setTransform(true);
-		ul.setBounds(szerokoscPoziomu-PrzechowalniaAssets.ul.getRegionWidth() - 10, 0, PrzechowalniaAssets.ul.getRegionWidth(), PrzechowalniaAssets.ul.getRegionHeight());
+		//ul.setBounds(szerokoscPoziomu-PrzechowalniaAssets.ul.getRegionWidth() - 10, 0, PrzechowalniaAssets.ul.getRegionWidth(), PrzechowalniaAssets.ul.getRegionHeight());
+		ul.setBounds(szerokoscPoziomu-PrzechowalniaAssets.ul.getRegionWidth(), (int)(SkalowalnyEkran.BASE_HEIGHT * 0.5), PrzechowalniaAssets.ul.getRegionWidth(), PrzechowalniaAssets.ul.getRegionHeight());
 		this.addActor(ul);
 	}
 	

@@ -21,6 +21,8 @@ public class WarstwaPorazki extends Warstwa {
 	//static final int HEIGHT = 300;
 	
 	public Button buttonNowaGra;
+	Label liczbaMiodu;
+	Label liczbaMonet;
 
 	public WarstwaPorazki(BumbleAndBee maingame)
 	{
@@ -48,8 +50,9 @@ public class WarstwaPorazki extends Warstwa {
 		Image miodImage = new Image(new TextureRegion(PrzechowalniaAssets.miod));
 		Image monetaImage = new Image(new TextureRegion(PrzechowalniaAssets.moneta));
 		
-		Label liczbaMiodu = new Label(pobierzIloscMiodu()+"", skin1);
-		Label liczbaMonet = new Label(pobierzIloscMonet()+"", skin1);
+		liczbaMiodu = new Label(pobierzIloscMiodu()+"", skin1);
+		liczbaMonet = new Label(pobierzIloscMonet()+"", skin1);
+		
 		//liczbaMiodu.setX(MIOD_X + 40);
 		//liczbaMiodu.setY(MIOD_Y - 5);
 		window.add(miodImage).maxSize(32, 32).center();
@@ -77,9 +80,8 @@ public class WarstwaPorazki extends Warstwa {
 			public void clicked (InputEvent event, float x, float y) 
 			{
 				event.stop();
-				gra.getScreen().dispose();
-				gra.setScreen(new SplashScreen(gra, true));
-				//gra.zacznijGre();
+				
+				gra.zacznijGre();
 				//((Level)gra.getScreen()).dyrektor.ustawAktywnaWarstwe(TypWarstwy.statystyki);
 			}
 		});
@@ -98,4 +100,10 @@ public class WarstwaPorazki extends Warstwa {
 	{
 		return gra.ileMonet;
 	}	
+	public void act(float delta)
+	{
+		liczbaMiodu.setText(pobierzIloscMiodu()+"");
+		liczbaMonet.setText(pobierzIloscMiodu()+"");
+	}
+
 }

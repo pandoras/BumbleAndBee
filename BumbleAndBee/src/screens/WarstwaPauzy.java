@@ -18,7 +18,6 @@ public class WarstwaPauzy extends Warstwa {
 		super(SkalowalnyEkran.BASE_WIDTH,  SkalowalnyEkran.BASE_HEIGHT, maingame);
 		
 		Skin skin = new Skin(Gdx.files.internal("skin/uiskin.json"));
-		
 		Skin windowskin = new Skin(Gdx.files.internal("skin/window.json"));
 		
 		buttonSklep = new TextButton("Sklep", skin);
@@ -51,8 +50,7 @@ public class WarstwaPauzy extends Warstwa {
 		
 		buttonMain.addListener(new ChangeListener() {
 			public void changed (ChangeEvent event, Actor actor) {
-				((Level)gra.getScreen()).dispose();
-				gra.setScreen(new MainMenu(gra));
+				gra.pokazMenu();
 			}
 		});	
 		

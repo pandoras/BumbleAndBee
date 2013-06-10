@@ -14,11 +14,11 @@ public class SplashScreen implements Screen {
 	Texture splashTexture;
 	Sprite splashSprite;
 	SpriteBatch batch;
-	BumbleAndBee game;
+	BumbleAndBee gra;
 	boolean nowaGra = false;
 	
 	public SplashScreen(BumbleAndBee game, boolean zacznijGre) {
-		this.game = game;
+		this.gra = game;
 		nowaGra = zacznijGre;
 	}
 
@@ -47,7 +47,7 @@ public class SplashScreen implements Screen {
 		batch = new SpriteBatch();
 		
 		if (nowaGra)
-			game.zacznijGre();
+			gra.setScreen(new Level(gra));
 /*
 	    if(Assets.load()) {
 	        this.dispose();

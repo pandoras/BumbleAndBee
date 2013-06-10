@@ -17,6 +17,7 @@ public class BumbleAndBee extends Game {
 	
 	public int ileMonet = 0;
 	public int ileMiodu = 0;	
+	public int nrPoziomu = 1;
 	
 	public BumbleAndBee(IPrzycisk przycisk)
 	{
@@ -63,18 +64,25 @@ public class BumbleAndBee extends Game {
 	public void zacznijGre()
 	{
 		ileMonet = 0;
-		ileMiodu = 0;		
-		setScreen(new Level(this));
+		ileMiodu = 0;	
+		nrPoziomu = 1;
+
+		this.getScreen().dispose();
+		this.setScreen(new SplashScreen(this, true));
 	}
 	
 	
-	public void zacznijLevel()
+	public void zacznijNastepnyPoziom()
 	{
-		setScreen(new Level(this));
+		nrPoziomu++;
+
+		this.getScreen().dispose();
+		this.setScreen(new SplashScreen(this, true));
 	}
 	
 	public void pokazMenu()
 	{
+		this.getScreen().dispose();
 		setScreen(new MainMenu(this));
 	}
 	
