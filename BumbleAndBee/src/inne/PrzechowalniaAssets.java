@@ -3,6 +3,7 @@ package inne;
 import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -26,6 +27,7 @@ public class PrzechowalniaAssets {
 	public static TextureRegion ul;
 	public static TextureRegion zadlo;
 	public static TextureRegion miod;
+	public static TextureRegion moneta;
 	
 	// indeksy przyciskow
 	public static final int przyciskStart = 0;
@@ -71,7 +73,13 @@ public class PrzechowalniaAssets {
 		
 		zadlo = new TextureRegion(new Texture(Gdx.files.internal("data/zadlo.png")));	
 		
-		miod = new TextureRegion(new Texture(Gdx.files.internal("data/miod.png")));		
+		miod = new TextureRegion(new Texture(Gdx.files.internal("data/miod.png")));	
+		
+		moneta = new TextureRegion(new Texture(Gdx.files.internal("data/moneta.png")));
 	
+		Music music = Gdx.audio.newMusic(Gdx.files.internal("music/music.mp3"));
+		music.setLooping(true);
+		music.setVolume(1.0f);
+		music.play();
 	}
 }
