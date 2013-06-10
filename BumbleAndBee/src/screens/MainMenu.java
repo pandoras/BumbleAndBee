@@ -6,11 +6,17 @@ import inne.NarzedziaBitmapy;
 import inne.PrzechowalniaAssets;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton.ImageButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.Align;
@@ -24,8 +30,11 @@ public class MainMenu extends SkalowalnyEkran {
 	private static final int BUTTON_WIDTH = 395;
 	private static final int BUTTON_HEIGHT = 77;
 	
+	
 	// InputProcessor, wype³nia ca³y ekran
 	private Stage estrada;
+	Window window;
+	Image closeImage;
 	
 	Table tablicaPrzyciskow;
 	ArrayList<Image> images = new ArrayList<Image>();
@@ -81,6 +90,14 @@ public class MainMenu extends SkalowalnyEkran {
 							Gdx.app.exit();
 						}});					
 					break;
+				case PrzechowalniaAssets.przyciskOpcje:
+					przycisk.addListener(new ClickListener(){
+						public void clicked(InputEvent event, float x, float y)
+						{
+							event.stop();
+							((MainMenu)game.getScreen()).pokazOpcje();
+						}});					
+					break;					
 				default:
 					break;
 			}
@@ -95,6 +112,13 @@ public class MainMenu extends SkalowalnyEkran {
 		tablicaPrzyciskow.setY(BASE_HEIGHT-3*BUTTON_HEIGHT-115);		
 	}
 	
+
+	protected void pokazOpcje() {
+		OknoOpcji opcje = new OknoOpcji(gra, estrada);
+		//estrada.addActor(opcje);
+
+	}
+
 
 	@Override
 	public void render(float delta) {
