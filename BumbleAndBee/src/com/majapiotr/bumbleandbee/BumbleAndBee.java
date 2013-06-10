@@ -19,6 +19,7 @@ public class BumbleAndBee extends Game {
 	public int ileMiodu = 0;	
 	public int nrPoziomu = 1;
 	public int liczbaSerduszek = 4;
+	public boolean muzyka = true;
 	
 	public BumbleAndBee(IPrzycisk przycisk)
 	{

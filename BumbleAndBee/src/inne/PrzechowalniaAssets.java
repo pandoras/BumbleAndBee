@@ -53,6 +53,8 @@ public class PrzechowalniaAssets {
 	public static TextureRegion textureFlower3;
 	public static TextureRegion textureFlower4;
 	
+	public static Music music;
+	
 	public static void load() {
 		
 		spriteBatch = new SpriteBatch();
@@ -99,7 +101,7 @@ public class PrzechowalniaAssets {
 		textureFlower3 = new TextureRegion(new Texture(Gdx.files.internal("data/flower_3.png")));
 		textureFlower4 = new TextureRegion(new Texture(Gdx.files.internal("data/flower_4.png")));
 	
-		Music music = Gdx.audio.newMusic(Gdx.files.internal("music/music.mp3"));
+		music = Gdx.audio.newMusic(Gdx.files.internal("music/music.mp3"));
 		music.setLooping(true);
 		music.setVolume(1.0f);
 		music.play();

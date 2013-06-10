@@ -7,9 +7,12 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.majapiotr.bumbleandbee.BumbleAndBee;
 
 public class OknoOpcji extends Window {
@@ -23,12 +26,14 @@ public class OknoOpcji extends Window {
 	private static final  Skin windowskin = new Skin(Gdx.files.internal("skin/window.json"));
 	Image closeImage;
 	OknoOpcji oknoOpcji;
+	BumbleAndBee gra;
 	
-	public OknoOpcji(BumbleAndBee gra, Stage warstwa)
+	public OknoOpcji(BumbleAndBee naszaGra, Stage warstwa)
 	{
 		super("OPCJE", windowskin);
+		gra = naszaGra;
 		oknoOpcji = this;
-		this.setLayoutEnabled(false);
+		this.setLayoutEnabled(true);
 		
 		this.setWidth(OPCJE_WIDTH);
 		this.setHeight(OPCJE_HEIGHT);
@@ -54,6 +59,23 @@ public class OknoOpcji extends Window {
 		      }}
 		);
 		
+		Skin skin = new Skin(Gdx.files.internal("skin/uiskin.json"));
+		TextButton buttonMuzyka = new TextButton("Muzyka", skin, "toggle");
+		if (gra.muzyka)
+			buttonMuzyka.setChecked(true);
+		else
+			buttonMuzyka.setChecked(false);
+		this.add(buttonMuzyka).expand().pad(30).fill();
+		
+		buttonMuzyka.addListener(new ChangeListener() {
+		      public void changed(ChangeEvent event, Actor actor) {
+		    	  gra.muzyka = !gra.muzyka;
+		    	  if (gra.muzyka)
+		    		  PrzechowalniaAssets.music.play();
+		    	  else
+		    		  PrzechowalniaAssets.music.stop();
+		      }}
+		);
 	}
 	
 	@Override

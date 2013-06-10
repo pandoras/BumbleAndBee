@@ -30,7 +30,7 @@ public class Pszczola extends AnimowanyObiekt implements EventListener  {
 	static final int MIN_X = 10;
 	static final int MAX_X = SkalowalnyEkran.BASE_WIDTH-100;
 	
-	private int pixeliNaSekunde = 100;
+	public int pixeliNaSekunde = 100;
 	public Zadlo zadlo;
 	public Body cialo = null;
 	Polygon granice;
