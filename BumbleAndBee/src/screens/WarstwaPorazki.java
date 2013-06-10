@@ -5,6 +5,7 @@ import inne.PrzechowalniaAssets;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -12,7 +13,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener.ChangeEvent;
 import com.majapiotr.bumbleandbee.BumbleAndBee;
 
 public class WarstwaPorazki extends Warstwa {
@@ -20,14 +23,12 @@ public class WarstwaPorazki extends Warstwa {
 	//static final int WIDTH = 400;
 	//static final int HEIGHT = 300;
 	
-	public Button buttonNowaGra;
+	public Button buttonNowaGra, buttonMain;
 	Label liczbaMiodu;
 	Label liczbaMonet;
 
 	public WarstwaPorazki(BumbleAndBee maingame)
 	{
-		
-		
 		super(SkalowalnyEkran.BASE_WIDTH,  SkalowalnyEkran.BASE_HEIGHT, maingame);
 		
 		// przygotuj style dla aktorow
@@ -43,6 +44,7 @@ public class WarstwaPorazki extends Warstwa {
 		
 		Window window = new Window("ZGINALES!!!", windowskin);
 		buttonNowaGra = new TextButton("Nowa Gra", skin);
+		buttonMain = new TextButton("Ekran glowny", skin);
 		
 		window.defaults().prefWidth(200).spaceBottom(10);
 		window.row().fill().expandX();
@@ -68,6 +70,11 @@ public class WarstwaPorazki extends Warstwa {
 		window.row();
 		window.pack();
 		
+		window.add(buttonMain).expand().colspan(2).center();
+		//buttonNowaGra.setX(30);
+		window.row();
+		window.pack();
+		
 		//window.setBounds((SkalowalnyEkran.BASE_WIDTH-WIDTH)/2,
 		//                (SkalowalnyEkran.BASE_HEIGHT-HEIGHT)/2,
 		//                 WIDTH, HEIGHT);	
@@ -85,6 +92,11 @@ public class WarstwaPorazki extends Warstwa {
 				//((Level)gra.getScreen()).dyrektor.ustawAktywnaWarstwe(TypWarstwy.statystyki);
 			}
 		});
+		buttonMain.addListener(new ChangeListener() {
+			public void changed (ChangeEvent event, Actor actor) {
+				gra.pokazMenu();
+			}
+		});	
 	}
 	
 	@Override
@@ -103,7 +115,7 @@ public class WarstwaPorazki extends Warstwa {
 	public void act(float delta)
 	{
 		liczbaMiodu.setText(pobierzIloscMiodu()+"");
-		liczbaMonet.setText(pobierzIloscMiodu()+"");
+		liczbaMonet.setText(pobierzIloscMonet()+"");
 	}
 
 }

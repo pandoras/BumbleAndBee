@@ -103,7 +103,7 @@ public class WarstwaStatystyk extends Warstwa implements RejestratorPunktacji {
 		addActor(miod);		
 		
 		// zycia
-		posiadaneZycia = new Zycia(1);
+		posiadaneZycia = new Zycia(4, gra);
 		posiadaneZycia.setX(ZYCIA_X);
 		posiadaneZycia.setY(SkalowalnyEkran.BASE_HEIGHT - ZYCIA_Y_TOP);
 		addActor(posiadaneZycia);			

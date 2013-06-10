@@ -18,6 +18,7 @@ public class BumbleAndBee extends Game {
 	public int ileMonet = 0;
 	public int ileMiodu = 0;	
 	public int nrPoziomu = 1;
+	public int liczbaSerduszek = 4;
 	
 	public BumbleAndBee(IPrzycisk przycisk)
 	{
@@ -66,6 +67,7 @@ public class BumbleAndBee extends Game {
 		ileMonet = 0;
 		ileMiodu = 0;	
 		nrPoziomu = 1;
+		liczbaSerduszek = 4;
 
 		this.getScreen().dispose();
 		this.setScreen(new SplashScreen(this, true));

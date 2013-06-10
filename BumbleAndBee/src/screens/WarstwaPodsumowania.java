@@ -110,6 +110,6 @@ public class WarstwaPodsumowania extends Warstwa {
 	public void act(float delta)
 	{
 		liczbaMiodu.setText(pobierzIloscMiodu()+"");
-		liczbaMonet.setText(pobierzIloscMiodu()+"");
+		liczbaMonet.setText(pobierzIloscMonet()+"");
 	}
 }
