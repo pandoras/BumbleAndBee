@@ -2,6 +2,8 @@ package screens;
 
 import java.util.ArrayList;
 
+import modele.Zycia;
+
 import zdazenia.Punktuj;
 
 import inne.PrzechowalniaAssets;
@@ -32,13 +34,13 @@ public class WarstwaSklepu extends Warstwa {
 	private static final int MIOD_X = 220;
 	private static final int MIOD_Y = 570;
 
-	private static final int KUP_X = 500;
-	private static final int KUP_Y = 400;
+	private static final int KUP_X = 275;
+	private static final int KUP_Y = 140;
 	
 	ArrayList<Image> kupButtons = new ArrayList<Image>();
 	Label liczbaMiodu;
 	
-	final int[] kosztySklep = new int[] {9999, 9999, 9999, 9999, 30, 50, 9999, 9999, 9999, 9999 };
+	final int[] kosztySklep = new int[] {9999, 9999, 9999, 9999, 30, 50, 25, 9999, 9999, 9999 };
 	
 	public WarstwaSklepu(BumbleAndBee maingame)
 	{
@@ -91,30 +93,29 @@ public class WarstwaSklepu extends Warstwa {
 		for(int nrPrzedmiotu = 0; nrPrzedmiotu < 8; nrPrzedmiotu++) {
 			Image kupImage = new Image(new TextureRegion(PrzechowalniaAssets.textureSklepKup));
 			kupButtons.add(kupImage);
-			kupButtons.get(nrPrzedmiotu).setPosition(275 + (nrPrzedmiotu % 4) * 193, 140 + 200 * (nrPrzedmiotu / 4));
+			kupButtons.get(nrPrzedmiotu).setPosition(KUP_X + (nrPrzedmiotu % 4) * 193, KUP_Y + 200 * (nrPrzedmiotu / 4));
 			this.addActor(kupButtons.get(nrPrzedmiotu));
 		
 		}
 		
-		// Przedmiot 4
+		// Przedmiot 4 - zwiekszony speed
 		kupButtons.get(4).addListener(new InputListener() {
 			public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
 				int miodek = pobierzIloscMiodu();
 				if(kosztySklep[4] <= miodek)
 				{
+					WarstwaStatystyk.pszczola.pixeliNaSekunde += 50;
 					miodek -= kosztySklep[4];
 					ustawIloscMiodu(miodek);
 				}
 				
 				liczbaMiodu.setText(miodek + "");
-				
-				System.out.print(4);
 		    	 
 				return false;
 			}
 		});
 		
-		// Przedmiot 5
+		// Przedmiot 5 - dod. zadlo
 		kupButtons.get(5).addListener(new InputListener() {
 			public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
 				int miodek = pobierzIloscMiodu();
@@ -125,8 +126,23 @@ public class WarstwaSklepu extends Warstwa {
 				}
 				
 				liczbaMiodu.setText(miodek + "");
+		    	 
+				return false;
+			}
+		});
+		
+		// Przedmiot 6 - dod. zycie
+		kupButtons.get(6).addListener(new InputListener() {
+			public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+				int miodek = pobierzIloscMiodu();
+				if(kosztySklep[6] <= miodek)
+				{
+					WarstwaStatystyk.posiadaneZycia.increment();
+					miodek -= kosztySklep[6];
+					ustawIloscMiodu(miodek);
+				}
 				
-				System.out.print(5);
+				liczbaMiodu.setText(miodek + "");
 		    	 
 				return false;
 			}
@@ -153,5 +169,5 @@ public class WarstwaSklepu extends Warstwa {
 	private void ustawIloscMiodu(int ilosc)
 	{
 		gra.ileMiodu = ilosc;
-	}	
+	}
 }

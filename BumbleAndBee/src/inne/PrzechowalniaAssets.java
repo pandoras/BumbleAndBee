@@ -36,17 +36,29 @@ public class PrzechowalniaAssets {
 	// tabela tekstur przyciskow
 	public static  ArrayList<Texture> teksturyPrzyciskow;
 	public static Texture textureMenu;
+	public static Texture textureBgLvl;
 	public static Texture textureSklep;
 	public static TextureRegion textureSklepZamknij;
 	public static TextureRegion textureSklepKup;
 	
 	public static TextureRegion textureStrzel;
 	
+	public static TextureRegion textureGrass1;
+	public static TextureRegion textureGrass2;
+	public static TextureRegion textureGrass3;
+	public static TextureRegion textureGrass4;
+	
+	public static TextureRegion textureFlower1;
+	public static TextureRegion textureFlower2;
+	public static TextureRegion textureFlower3;
+	public static TextureRegion textureFlower4;
+	
 	public static void load() {
 		
 		spriteBatch = new SpriteBatch();
 		
 		textureMenu = new Texture(Gdx.files.internal("menu/MainMenu.jpg"));
+		textureBgLvl = new Texture(Gdx.files.internal("data/background_lvl.jpg"));
 		
 		textureSklep = new Texture(Gdx.files.internal("sklep/calosc.png"));
 		textureSklepZamknij = new TextureRegion(new Texture(Gdx.files.internal("sklep/zamknij.png")));
@@ -76,6 +88,16 @@ public class PrzechowalniaAssets {
 		miod = new TextureRegion(new Texture(Gdx.files.internal("data/miod.png")));	
 		
 		moneta = new TextureRegion(new Texture(Gdx.files.internal("data/moneta.png")));
+		
+		textureGrass1 = new TextureRegion(new Texture(Gdx.files.internal("data/grass_1.png")));
+		textureGrass2 = new TextureRegion(new Texture(Gdx.files.internal("data/grass_2.png")));
+		textureGrass3 = new TextureRegion(new Texture(Gdx.files.internal("data/grass_3.png")));
+		textureGrass4 = new TextureRegion(new Texture(Gdx.files.internal("data/grass_4.png")));
+		
+		textureFlower1 = new TextureRegion(new Texture(Gdx.files.internal("data/flower_1.png")));
+		textureFlower2 = new TextureRegion(new Texture(Gdx.files.internal("data/flower_2.png")));
+		textureFlower3 = new TextureRegion(new Texture(Gdx.files.internal("data/flower_3.png")));
+		textureFlower4 = new TextureRegion(new Texture(Gdx.files.internal("data/flower_4.png")));
 	
 		Music music = Gdx.audio.newMusic(Gdx.files.internal("music/music.mp3"));
 		music.setLooping(true);

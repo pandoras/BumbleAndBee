@@ -45,8 +45,8 @@ public class WarstwaStatystyk extends Warstwa implements RejestratorPunktacji {
 	long czas = System.nanoTime();
 
 	Label labelIleMonet, labelIleMiodu, labelCzas;
-	Zycia posiadaneZycia;
-	public Pszczola pszczola;		
+	public static Zycia posiadaneZycia;
+	public static Pszczola pszczola;		
 	
 	public Dyrektor dyrektor; 
 	

@@ -1,17 +1,25 @@
 package screens;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
 import zdazenia.Punktuj;
 import inne.PrzechowalniaAssets;
 import modele.KolekcjaObiektow;
 import modele.Przeciwnicy;
 import modele.Pszczola;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Pixmap.Format;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.utils.Align;
+import com.badlogic.gdx.utils.Scaling;
 import com.majapiotr.bumbleandbee.BumbleAndBee;
 
 public class WarstwaTla extends Warstwa {
@@ -24,6 +32,8 @@ public class WarstwaTla extends Warstwa {
 	// jednolita tekstura t³a
 	Texture teksturaT³a;
 	
+	List<Integer> pozycjeKwiatow = new ArrayList<Integer>();
+	
 	public WarstwaTla(int mnoznikDlugosci, BumbleAndBee maingame, Pszczola bee)
 	{
 		super(SkalowalnyEkran.BASE_WIDTH * mnoznikDlugosci,  SkalowalnyEkran.BASE_HEIGHT, maingame);
@@ -31,10 +41,76 @@ public class WarstwaTla extends Warstwa {
 		
 		// zainicjuj teksturê t³a
 		Pixmap p = new Pixmap(1, 1, Format.RGBA8888);
-		p.setColor(new Color(0.15f, 0.58f, 0, 1));
+		p.setColor(new Color(0.49f, 0.80f, 0.90f, 1));
 		p.fillRectangle(0, 0, 1, 1);	
-	    teksturaT³a = new Texture(p, Format.RGB888, false);		
-	
+	    teksturaT³a = new Texture(p, Format.RGB888, false);
+	    for(int i = 0; i < 3; i++) {
+    		Image closeImage = new Image(new TextureRegion(PrzechowalniaAssets.textureBgLvl));
+			closeImage.setX(0 + 1200 * i);
+			closeImage.setY(0);
+			this.addActor(closeImage);
+	    }
+	    
+	    // generowanie kwiatow
+	    for(int i = 0; i < 25; i++) {
+    		Random generatorPozycjiKwiata = new Random();
+	    	int pozycjaX = generatorPozycjiKwiata.nextInt(4000);
+	    	boolean czyBylKwiat = false;
+
+	    	// sprawdzenie czy na tej pozycji byl juz kwiat
+	    	for(int j = 0; j < pozycjeKwiatow.size(); j++)
+	    		if(pozycjeKwiatow.get(j) - 100 < pozycjaX && pozycjeKwiatow.get(j) + 100 > pozycjaX) czyBylKwiat = true;
+	    	
+	    	if(!czyBylKwiat) {
+	    		Image flowerImage = new Image(new TextureRegion(PrzechowalniaAssets.textureFlower1));
+	    		Random generator = new Random();
+		    	switch(generator.nextInt(3)) {
+		    		case 0:
+		    			flowerImage = new Image(new TextureRegion(PrzechowalniaAssets.textureFlower1));
+		    			break;
+		    		case 1:
+		    			flowerImage = new Image(new TextureRegion(PrzechowalniaAssets.textureFlower2));
+		    			break;
+		    		case 2:
+		    			flowerImage = new Image(new TextureRegion(PrzechowalniaAssets.textureFlower3));
+		    			break;
+		    		case 3:
+		    			flowerImage = new Image(new TextureRegion(PrzechowalniaAssets.textureFlower4));
+		    			break;
+		    	}
+		    	flowerImage.setX(pozycjaX);
+				flowerImage.setY(0);
+				Random generatorWielkosci = new Random();
+				
+				flowerImage.scale(generatorWielkosci.nextFloat() / 5);
+				pozycjeKwiatow.add(pozycjaX);
+				this.addActor(flowerImage);
+	    	} else i--;
+	    }
+		
+	    // losowanie trawy i jej wyswietlanie
+	    for(int i = 0; i < 11; i++) {
+    		Image closeImage = new Image(new TextureRegion(PrzechowalniaAssets.textureGrass1));
+    		Random generator = new Random();
+	    	switch(generator.nextInt(3)) {
+	    		case 0:
+	    			closeImage = new Image(new TextureRegion(PrzechowalniaAssets.textureGrass1));
+	    			break;
+	    		case 1:
+	    			closeImage = new Image(new TextureRegion(PrzechowalniaAssets.textureGrass2));
+	    			break;
+	    		case 2:
+	    			closeImage = new Image(new TextureRegion(PrzechowalniaAssets.textureGrass3));
+	    			break;
+	    		case 3:
+	    			closeImage = new Image(new TextureRegion(PrzechowalniaAssets.textureGrass4));
+	    			break;
+	    	}
+			closeImage.setX(0 + 357 * i);
+			closeImage.setY(0);
+			this.addActor(closeImage);
+	    }
+			
 		// inicjujemy monety i miodki
 		miodki = new KolekcjaObiektow( new float[] 
 				{0.12626907f, 13.13198262f, 
@@ -61,18 +137,10 @@ public class WarstwaTla extends Warstwa {
 		monety.stworz(100, 200, SkalowalnyEkran.BASE_WIDTH * mnoznikDlugosci, SkalowalnyEkran.BASE_HEIGHT, this);	
 		
 		przeciwnicy = new Przeciwnicy(bee);
-		if(gra.nrPoziomu == 1)
-			przeciwnicy.stworz(800, 200, SkalowalnyEkran.BASE_WIDTH * mnoznikDlugosci, SkalowalnyEkran.BASE_HEIGHT, this);
-		else if (gra.nrPoziomu == 2)
-			przeciwnicy.stworz(800, 150, SkalowalnyEkran.BASE_WIDTH * mnoznikDlugosci, SkalowalnyEkran.BASE_HEIGHT, this);
-		else if (gra.nrPoziomu == 3)
-			przeciwnicy.stworz(800, 100, SkalowalnyEkran.BASE_WIDTH * mnoznikDlugosci, SkalowalnyEkran.BASE_HEIGHT, this);
-		else
-			przeciwnicy.stworz(800, 50, SkalowalnyEkran.BASE_WIDTH * mnoznikDlugosci, SkalowalnyEkran.BASE_HEIGHT, this);
+		przeciwnicy.stworz(800, 200, SkalowalnyEkran.BASE_WIDTH * mnoznikDlugosci, SkalowalnyEkran.BASE_HEIGHT, this);
 		
 		Image ul = new Image(PrzechowalniaAssets.ul);
 		//obrazki[ilosc].setTransform(true);
-		//ul.setBounds(szerokoscPoziomu-PrzechowalniaAssets.ul.getRegionWidth() - 10, 0, PrzechowalniaAssets.ul.getRegionWidth(), PrzechowalniaAssets.ul.getRegionHeight());
 		ul.setBounds(szerokoscPoziomu-PrzechowalniaAssets.ul.getRegionWidth(), (int)(SkalowalnyEkran.BASE_HEIGHT * 0.5), PrzechowalniaAssets.ul.getRegionWidth(), PrzechowalniaAssets.ul.getRegionHeight());
 		this.addActor(ul);
 	}
